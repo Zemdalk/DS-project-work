@@ -43,6 +43,8 @@
 
 ## 5.6 最小生成树问题
 
+Kruscal算法
+
 ## 5.8 全国交通咨询模拟
 
 [全国交通咨询系统 by C++ on Linux and OS X](https://github.com/bw98/national-Transport-Advisory)
