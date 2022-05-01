@@ -72,6 +72,8 @@ ssh-keygen -t rsa -C "这里换上你的邮箱"
 
 **完成了以上工作，等我邀请你合作管理仓库，邀请之后我会告诉你一声，然后请继续下面的步骤。**
 
+> 原来可以直接通过URL邀请……以后记住了。
+
 # 5. 克隆本次项目仓库，用Git进行管理
 
 仓库地址：[https://github.com/Zemdalk/DS-project-work](https://github.com/Zemdalk/DS-project-work)
