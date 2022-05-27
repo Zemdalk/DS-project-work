@@ -81,9 +81,6 @@ void SetTrainTable(TrainTable *TTable, FILE *TT);
 void SetFlightTable(FlightTable *FTable, FILE *FT);
 
 // 核心功能
-// 显示城市交通图
-void ShowCityMap(CityMap *CMap);
-
 // 显示列车时刻表
 void ShowTrainTable(TrainTable *TTable);
 

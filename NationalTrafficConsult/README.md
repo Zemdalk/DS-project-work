@@ -4,7 +4,7 @@
 
 可以阅读教材7.6节 最短路径（P186）。
 
-详细的数据结构和各主要函数已经在头文件![NationalTrafficConsult.c](NationalTrafficConsult.c)中实现。
+详细的数据结构和各主要函数已经在头文件[NationalTrafficConsult.c](NationalTrafficConsult.c)中实现。
 
 # 数据结构
 
@@ -37,68 +37,30 @@
 
 # 功能
 
-## 功能列表
-
-- 用户界面-功能选择
-  <!-- - 显示城市交通图 -->
-  - 显示列车时刻表
-  - 显示飞机航班表
-  - 编辑城市信息
-  - 编辑列车时刻表
-  - 编辑飞机航班表
-  - 进行路线规划
-
 ## 函数
 
-下面的代码从![NationalTrafficConsult.c](NationalTrafficConsult.c)头文件中复制而来。
+相关函数已经在头文件[NationalTrafficConsult.c](NationalTrafficConsult.c)中列出，此处不再赘述。
 
-``` c
-// 显示城市交通图
-void ShowCityMap(CityMap *CMap);
+## 执行流程
 
-// 显示列车时刻表
-void ShowTrainTable(TrainTable *TTable);
-
-// 显示飞机航班表
-void ShowFlightTable(FlightTable *FTable);
-
-// 新增城市
-// 返回值设为 void 还是 CityMap * 好呢？
-CityMap *AddCity(CityMap *CMap, char city[]);
-
-// 删除城市
-CityMap *DelCity(CityMap *CMap, char city[]);
-
-// 新增路线
-CityMap *AddRoute(CityMap *CMap, char city1[], char city2[], int weight);
-
-// 删除路线
-CityMap *DelRoute(CityMap *CMap, char city1[], char city2[]);
-
-// 添加列车车次
-TrainTable *AddTrain(TrainTable *TTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
-
-// 删除列车车次
-TrainTable *DelTrain(TrainTable *TTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
-
-// 添加飞机航班
-FlightTable *AddFlight(FlightTable *FTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
-
-// 删除飞机航班
-FlightTable *DelFlight(FlightTable *FTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
-
-// 为乘客提供最优决策(rule: 最优决策原则   transportation: 交通工具)
-void Decision(CityMap *CMap, TrainTable *TTable, FlightTable *FTable, char departure[], char terminal[], int rule, int transportation);
-
-// 最省时决策
-void LeastDurationTime(CityMap *CMap, TrainTable *TTable, FlightTable *FTable, char departure[], char terminal[], int transportation);
-
-// 最省钱决策
-void LeastCost(CityMap *CMap, TrainTable *TTable, FlightTable *FTable, char departure[], char terminal[], int transportation);
-
-// 中转次数最少决策
-void LeastExchange(CityMap *CMap, TrainTable *TTable, FlightTable *FTable, char departure[], char terminal[], int transportation);
-```
+- 选择功能 `main()`
+  - 显示列车时刻表 `ShowTrainTable()`
+  - 显示飞机航班表 `ShowFlightTable()`
+  - 编辑城市信息   `EditCity()`
+    - 新增城市 `AddCity()`
+    - 删除城市 `DelCity()`
+    - 新增路线 `AddRoute()`
+    - 删除路线 `DelRoute()`
+  - 编辑列车时刻表 `EditTrain()`
+    - 添加列车车次 `AddTrain()`
+    - 删除列车车次 `DelTrain()`
+  - 编辑飞机航班表 `EditFlight()`
+    - 添加飞机航班 `AddFlight()`
+    - 删除飞机航班 `DelFlight()`
+  - 进行路线规划   `Decision()`
+    - 最省时决策      `LeastDurationTime()`
+    - 最省钱决策      `LeastCost()`
+    - 中转次数最少决策 `LeastExchange()`
 
 # 相关文件
 
