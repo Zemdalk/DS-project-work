@@ -37,6 +37,8 @@
 
 # 功能
 
+![Flowchart](Flowchart.png)
+
 ## 函数
 
 相关函数已经在头文件[NationalTrafficConsult.c](NationalTrafficConsult.c)中列出，此处不再赘述。
