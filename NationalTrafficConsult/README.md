@@ -4,44 +4,21 @@
 
 可以阅读教材7.6节 最短路径（P186）。
 
-详细的数据结构和各主要函数已经在头文件[NationalTrafficConsult.c](NationalTrafficConsult.c)中实现。
+详细的数据结构和各主要函数已经在头文件[NationalTrafficConsult.h](NationalTrafficConsult.h)中实现。
 
 # 数据结构
 
-## 应有信息
-
-- 城市交通图
-  - 带权无向图
-- 飞机航班表
-  - 起始站
-  - 起始站出发时间
-  - 终点站
-  - 终点站到达时间
-  - 票价
-
-- 列车时刻表
-    需要根据交通图给出各个路段的详细信息。
-
-> 疑问：飞机航班表和列车时刻表有什么不同？为什么要专门指出列车时刻表还要给出各个路段的详细信息？所有航班都是直达吗？
-
-## 存储结构
-
-- 城市交通图
-  - 带权无向图，课本P187
-  - 邻接表
-  - <del>注意，表示边的结点内除含有邻接点的信息外，还应该包括各段的出发时间、到达时间及票价等信息。</del>
-- 列车时刻表
+- 时间的规整格式 `Time`
+- 城市交通图 `CityMap`
+  - 邻接表，和PPT上讲的基本一样
+- 列车时刻表 `TrainTable`
   - 单链表
-- 飞机航班表
+- 飞机航班表 `TrainTable`
   - 单链表
 
 # 功能
 
 ![Flowchart](Flowchart.png)
-
-## 函数
-
-相关函数已经在头文件[NationalTrafficConsult.c](NationalTrafficConsult.c)中列出，此处不再赘述。
 
 ## 执行流程
 
