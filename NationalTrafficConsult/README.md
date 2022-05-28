@@ -1,10 +1,13 @@
-# 题目
+# 整体构想
 
-暂略
+**详细的数据结构和各主要函数的定义已经在头文件[NationalTrafficConsult.h](NationalTrafficConsult.h)中实现。**
 
-可以阅读教材7.6节 最短路径（P186）。
-
-详细的数据结构和各主要函数已经在头文件[NationalTrafficConsult.h](NationalTrafficConsult.h)中实现。
+- 两种表的显示（1人）：Setters and Getters
+- 数据结构的编辑（1人）：信息的增删，包括城市信息、列车时刻表以及飞机航班表
+- 路线规划★★
+  - 最省钱（1人）
+  - 最省时间（1人）
+  - 最少中转（1人）
 
 # 数据结构
 
