@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <limits.h>         
 
 #define MAX_STR_LEN 500     // 字符串最大长度
 #define MAX_VEX_NUM 100     // (城市交通)图中最大顶点数目
+#define MAX_INFO 20         // 最大航班及车次数量和
 
 // 时间的规整格式
 typedef struct Time{
@@ -10,9 +13,20 @@ typedef struct Time{
     int minute;     // 分钟数
 } Time;
 
+// 车次/航班信息
+typedef struct Info{
+    int tag;                // 0：火车    1：飞机
+    char number[7];         // T/Fxxxxxx, 编号规则：T火车F飞机，010203表示从01号城市到02号城市的第03趟车次/航班
+    double cost;            // 票价，规范为两位小数
+    Time start_time;        // 起始时间
+    Time end_time;          // 到达时间
+    int duration;           // 时长，单位为分钟
+} Info;
+
 // 表结点
 typedef struct CityNode{
     int vindex;             // 该结点在表头结点数组中的城市序号
+    Info info[MAX_INFO];    // 本趟车次/航班的相关信息
     struct CityNode *next;  // 下个结点
 } NodeLink;
 
@@ -22,112 +36,55 @@ typedef struct CityMap{
     struct {
         char city[MAX_STR_LEN]; // 城市名
         NodeLink *first;        // 第一个邻接点
-    } v[MAX_VEX_NUM];
+    } v[MAX_VEX_NUM];           // 城市序号v[i]
 } CityMap;
-
-// 列车时刻表：单链表
-typedef struct TrainTable{
-    int num;                            // 列车总数，或车次编号
-    struct Train{
-        char departure[MAX_STR_LEN];    // 始发站
-        char terminal[MAX_STR_LEN];     // 终点站
-        Time start_time;                // 起始时间
-        Time end_time;                  // 到达时间
-        int duration_time;              // 路途用时
-        double cost;                    // 票价
-    } Train;
-    struct TrainTable *next;            // 下趟车次
-} TrainNode, TrainTable;
-
-// 飞机航班表：单链表
-typedef struct FlightTable{
-    int num;                            // 航班总数，或航班编号
-    struct Flight{
-        char departure[MAX_STR_LEN];    // 始发站
-        char terminal[MAX_STR_LEN];     // 终点站
-        Time start_time;                // 起始时间
-        Time end_time;                  // 到达时间
-        int duration_time;              // 路途用时
-        double cost;                    // 票价
-    } Flight;
-    struct FlightTable *next;
-} FlightNode, FlightTable;              // 下趟航班
 
 // 获取两个时刻的时间间隔(t1 < t2, 返回值的单位为分钟)
 int GetDurationTime(Time t1, Time t2);
 
-/* 
-setters and getters
-- setter: 形如void SetElem(Type *T, FILE *F)，意为把数据结构T中的内容保存到文件F中去
-- getter: 形如Type *GetElem(FILE *F)，意为获取文件F中的内容，并转换到Type类型的数据结构，作为返回值
+// 保存数据：把交通图的信息分别保存到TrainTable.txt和FlightTable.txt中
+void SetMap(CityMap *CMap, FILE *TT, FILE *FT);
+
+// 获取数据：把现有的TrainTable.txt和FlightTable.txt中的数据存储为一张交通图
+CityMap *GetMap(FILE *TT, FILE *FT);
+
+/*
+显示时刻表和航班表，都要相应地把文件按照规范格式保存起来
+FT: FlightTable.txt
+TT: TrainTable.txt
 */
-
-// 获取城市交通图
-CityMap *GetCityMap(FILE *CM);
-
-// 获取列车时刻表
-TrainTable *GetTrainTable(FILE *TT);
-
-// 获取飞机航班表
-FlightTable *GetFlightTable(FILE *FT);
-
-// 保存城市交通图
-void SetCityMap(CityMap *CMap, FILE *CM);
-
-// 保存列车时刻表
-void SetTrainTable(TrainTable *TTable, FILE *TT);
-
-// 保存飞机航班表
-void SetFlightTable(FlightTable *FTable, FILE *FT);
-
-// 核心功能
 // 显示列车时刻表
-void ShowTrainTable(TrainTable *TTable);
+void ShowTrainTable(CityMap *CMap, FILE *TT);
 
 // 显示飞机航班表
-void ShowFlightTable(FlightTable *FTable);
+void ShowFlightTable(CityMap *CMap, FILE *FT);
 
-// 编辑城市信息
-CityMap *EditCity(CityMap *CMap);
+// 编辑车次信息
+CityMap *EditTrain(CityMap *CMap);
 
-// 新增城市
-CityMap *AddCity(CityMap *CMap, char city[]);
+// 添加车次
+CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// 删除城市
-CityMap *DelCity(CityMap *CMap, char city[]);
-
-// 新增路线
-CityMap *AddRoute(CityMap *CMap, char city1[], char city2[], int weight);
-
-// 删除路线
-CityMap *DelRoute(CityMap *CMap, char city1[], char city2[], int weight);
-
-// 编辑列车信息
-TrainTable *EditTrain(TrainTable *TTable);
-
-// 添加列车车次
-TrainTable *AddTrain(TrainTable *TTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
-
-// 删除列车车次
-TrainTable *DelTrain(TrainTable *TTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
+// 删除车次
+CityMap *DelTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
 // 编辑航班信息
-FlightTable *EditFlight(FlightTable *FTable);
+CityMap *EditFlight(CityMap *CMap);
 
-// 添加飞机航班
-FlightTable *AddFlight(FlightTable *FTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
+// 添加航班
+CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// 删除飞机航班
-FlightTable *DelFlight(FlightTable *FTable, char departure[], char terminal[], Time start_time, Time end_time, double cost);
+// 删除航班
+CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// 为乘客提供最优决策
-void Decision(CityMap *CMap, TrainTable *TTable, FlightTable *FTable);
+// 为乘客提供最优决策：依次问乘客决策的相关信息，并跳转到下面三个函数之一，下面三个函数才真正实现具体算法
+void Decision(CityMap *CMap);
 
 // 最省时决策(rule: 最优决策原则   transportation: 交通工具)
-void LeastDurationTime(CityMap *CMap, TrainTable *TTable, FlightTable *FTable, char departure[], char terminal[], int transportation);
+void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int transportation);
 
 // 最省钱决策(rule: 最优决策原则   transportation: 交通工具)
-void LeastCost(CityMap *CMap, TrainTable *TTable, FlightTable *FTable, char departure[], char terminal[], int transportation);
+void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportation);
 
 // 中转次数最少决策(rule: 最优决策原则   transportation: 交通工具)
-void LeastExchange(CityMap *CMap, TrainTable *TTable, FlightTable *FTable, char departure[], char terminal[], int transportation);
+void LeastExchange(CityMap *CMap, char departure[], char terminal[], int transportation);

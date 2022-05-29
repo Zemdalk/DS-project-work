@@ -2,12 +2,11 @@
 
 **详细的数据结构和各主要函数的定义已经在头文件[NationalTrafficConsult.h](NationalTrafficConsult.h)中实现。**
 
-- 两种表的显示（1人）：Setters and Getters
-- 数据结构的编辑（1人）：信息的增删，包括城市信息、列车时刻表以及飞机航班表
-- 路线规划★★
-  - 最省钱（1人）
-  - 最省时间（1人）
-  - 最少中转（1人）
+- 表的显示（lxy）
+- 表的编辑（hk）
+- 路线决策（zyj）
+
+不涉及经停车次，所有车次都是直达。在相同车站之间会有多趟不同时间、票价的车次及航班。
 
 # 数据结构
 
@@ -28,11 +27,6 @@
 - 选择功能 `main()`
   - 显示列车时刻表 `ShowTrainTable()`
   - 显示飞机航班表 `ShowFlightTable()`
-  - 编辑城市信息   `EditCity()`
-    - 新增城市 `AddCity()`
-    - 删除城市 `DelCity()`
-    - 新增路线 `AddRoute()`
-    - 删除路线 `DelRoute()`
   - 编辑列车时刻表 `EditTrain()`
     - 添加列车车次 `AddTrain()`
     - 删除列车车次 `DelTrain()`
@@ -48,7 +42,6 @@
 
 除了代码之外，还应该有
 
-- CityMap.txt，保存城市交通图
 - TrainTable.txt，保存列车时刻表
 - FlightTable.txt，保存飞机航班图
 
