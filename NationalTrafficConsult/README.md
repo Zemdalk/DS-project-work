@@ -37,7 +37,15 @@
 
 # 相关文件
 
-除了代码之外，还应该有
+## 代码文件
+
+- NationalTrafficConsult.h，头文件
+- NationalTrafficConsult.c，主流程
+  - Show.c，显示车次表/航班表（lxy）
+  - Edit.c，编辑车次表/航班表（hk）
+  - Decision.c，进行路线规划（zyj）
+
+## 数据文件
 
 - TrainTable.txt，保存列车时刻表
 - FlightTable.txt，保存飞机航班图
