@@ -12,11 +12,8 @@
 
 - 时间的规整格式 `Time`
 - 城市交通图 `CityMap`
-  - 邻接表，和PPT上讲的基本一样
-- 列车时刻表 `TrainTable`
-  - 单链表
-- 飞机航班表 `TrainTable`
-  - 单链表
+  - 表结点 `NodeLink`
+  - 车次/航班信息 `Info`
 
 # 功能
 
@@ -44,6 +41,8 @@
 
 - TrainTable.txt，保存列车时刻表
 - FlightTable.txt，保存飞机航班图
+
+# 输入规范
 
 # 其它
 

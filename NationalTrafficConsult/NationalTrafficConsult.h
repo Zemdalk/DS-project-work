@@ -30,7 +30,7 @@ typedef struct CityNode{
     struct CityNode *next;  // 下个结点
 } NodeLink;
 
-// 城市交通图：正邻接表
+// 城市交通图：邻接表
 typedef struct CityMap{
     int vexnum, edgenum;        // 图的顶点数，边数
     struct {
@@ -42,24 +42,31 @@ typedef struct CityMap{
 // 获取两个时刻的时间间隔(t1 < t2, 返回值的单位为分钟)
 int GetDurationTime(Time t1, Time t2);
 
+/*
+功能1、2：显示时刻表和航班表。（lxy）
+先调用SetMap，然后从txt文件中打印
+FT: FlightTable.txt
+TT: TrainTable.txt
+*/
+
 // 保存数据：把交通图的信息分别保存到TrainTable.txt和FlightTable.txt中
 void SetMap(CityMap *CMap, FILE *TT, FILE *FT);
 
 // 获取数据：把现有的TrainTable.txt和FlightTable.txt中的数据存储为一张交通图
 CityMap *GetMap(FILE *TT, FILE *FT);
 
-/*
-显示时刻表和航班表，都要相应地把文件按照规范格式保存起来
-FT: FlightTable.txt
-TT: TrainTable.txt
-*/
 // 显示列车时刻表
 void ShowTrainTable(CityMap *CMap, FILE *TT);
 
 // 显示飞机航班表
 void ShowFlightTable(CityMap *CMap, FILE *FT);
 
-// 编辑车次信息
+/* 
+功能3、4：编辑车次及航班信息。（hk）
+这里**不需要**和文件交互，从控制台上按照输入规范依次询问管理员即可
+*/
+
+// 编辑车次信息主函数
 CityMap *EditTrain(CityMap *CMap);
 
 // 添加车次
@@ -68,7 +75,7 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
 // 删除车次
 CityMap *DelTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// 编辑航班信息
+// 编辑航班信息主函数
 CityMap *EditFlight(CityMap *CMap);
 
 // 添加航班
@@ -77,7 +84,11 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
 // 删除航班
 CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// 为乘客提供最优决策：依次问乘客决策的相关信息，并跳转到下面三个函数之一，下面三个函数才真正实现具体算法
+/* 功能5：为乘客提供最优决策。（zyj）
+主函数中依次问乘客决策的相关信息，并跳转到后面三个函数之一，下面三个函数才真正实现具体算法
+*/
+
+// 决策主函数
 void Decision(CityMap *CMap);
 
 // 最省时决策(rule: 最优决策原则   transportation: 交通工具)
