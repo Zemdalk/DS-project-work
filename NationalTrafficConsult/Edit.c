@@ -1,5 +1,9 @@
 #include "NationalTrafficConsult.h"
 
+int GetDurationTime(Time t1, Time t2){
+    // 你如果乐意的话，可以写这个函数来返回时长
+}
+
 CityMap *EditTrain(CityMap *CMap){
     // 流程：(用户输入可能不合法，“输入无效，请重新输入！”)
     // 请问您要执行的操作（1/2）
