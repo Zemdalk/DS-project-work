@@ -84,6 +84,9 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
 // 删除航班
 CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
+//输入无效跳出提示
+void InvalidInputs(void);
+
 /* 功能5：为乘客提供最优决策。（zyj）
 主函数中依次问乘客决策的相关信息，并跳转到后面三个函数之一，下面三个函数才真正实现具体算法
 */
