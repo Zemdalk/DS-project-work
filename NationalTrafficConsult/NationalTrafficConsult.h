@@ -49,6 +49,9 @@ FT: FlightTable.txt
 TT: TrainTable.txt
 */
 
+// 测试数据集，返回一张由该函数定义的交通图，图的详细内容请见TestData.png
+CityMap *TestData();
+
 // 保存数据：把交通图的信息分别保存到TrainTable.txt和FlightTable.txt中
 void SetMap(CityMap *CMap, char TTable[], char FTable[]);
 
