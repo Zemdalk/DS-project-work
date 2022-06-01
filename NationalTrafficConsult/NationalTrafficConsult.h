@@ -3,102 +3,102 @@
 #include <string.h>
 #include <limits.h>         
 
-#define MAX_STR_LEN 500     // å­—ç¬¦ä¸²æœ€å¤§é•¿åº¦
-#define MAX_VEX_NUM 100     // (åŸå¸‚äº¤é€š)å›¾ä¸­æœ€å¤§é¡¶ç‚¹æ•°ç›®
-#define MAX_INFO 20         // æœ€å¤§èˆªç­åŠè½¦æ¬¡æ•°é‡å’Œ
+#define MAX_STR_LEN 500     // ×Ö·û´®×î´ó³¤¶È
+#define MAX_VEX_NUM 100     // (³ÇÊĞ½»Í¨)Í¼ÖĞ×î´ó¶¥µãÊıÄ¿
+#define MAX_INFO 20         // ×î´óº½°à¼°³µ´ÎÊıÁ¿ºÍ
 
-// æ—¶é—´çš„è§„æ•´æ ¼å¼
+// Ê±¼äµÄ¹æÕû¸ñÊ½
 typedef struct Time{
-    int hour;       // å°æ—¶æ•°
-    int minute;     // åˆ†é’Ÿæ•°
+    int hour;       // Ğ¡Ê±Êı
+    int minute;     // ·ÖÖÓÊı
 } Time;
 
-// è½¦æ¬¡/èˆªç­ä¿¡æ¯
+// ³µ´Î/º½°àĞÅÏ¢
 typedef struct Info{
-    int tag;                // 0ï¼šç«è½¦    1ï¼šé£æœº
-    char number[7];         // T/Fxxxxxx, ç¼–å·è§„åˆ™ï¼šTç«è½¦Fé£æœºï¼Œ010203è¡¨ç¤ºä»01å·åŸå¸‚åˆ°02å·åŸå¸‚çš„ç¬¬03è¶Ÿè½¦æ¬¡/èˆªç­
-    double cost;            // ç¥¨ä»·ï¼Œè§„èŒƒä¸ºä¸¤ä½å°æ•°
-    Time start_time;        // èµ·å§‹æ—¶é—´
-    Time end_time;          // åˆ°è¾¾æ—¶é—´
-    int duration;           // æ—¶é•¿ï¼Œå•ä½ä¸ºåˆ†é’Ÿ
+    int tag;                // 0£º»ğ³µ    1£º·É»ú
+    char number[8];         // T/Fxxxxxx, ±àºÅ¹æÔò£ºT»ğ³µF·É»ú£¬010203±íÊ¾´Ó01ºÅ³ÇÊĞµ½02ºÅ³ÇÊĞµÄµÚ03ÌË³µ´Î/º½°à
+    double cost;            // Æ±¼Û£¬¹æ·¶ÎªÁ½Î»Ğ¡Êı
+    Time start_time;        // ÆğÊ¼Ê±¼ä
+    Time end_time;          // µ½´ïÊ±¼ä
+    int duration;           // Ê±³¤£¬µ¥Î»Îª·ÖÖÓ
 } Info;
 
-// è¡¨ç»“ç‚¹
+// ±í½áµã
 typedef struct CityNode{
-    int vindex;             // è¯¥ç»“ç‚¹åœ¨è¡¨å¤´ç»“ç‚¹æ•°ç»„ä¸­çš„åŸå¸‚åºå·
-    Info info[MAX_INFO];    // æœ¬è¶Ÿè½¦æ¬¡/èˆªç­çš„ç›¸å…³ä¿¡æ¯
-    struct CityNode *next;  // ä¸‹ä¸ªç»“ç‚¹
+    int vindex;             // ¸Ã½áµãÔÚ±íÍ·½áµãÊı×éÖĞµÄ³ÇÊĞĞòºÅ
+    Info info[MAX_INFO];    // ±¾ÌË³µ´Î/º½°àµÄÏà¹ØĞÅÏ¢
+    struct CityNode *next;  // ÏÂ¸ö½áµã
 } NodeLink;
 
-// åŸå¸‚äº¤é€šå›¾ï¼šé‚»æ¥è¡¨
+// ³ÇÊĞ½»Í¨Í¼£ºÁÚ½Ó±í
 typedef struct CityMap{
-    int vexnum, edgenum;        // å›¾çš„é¡¶ç‚¹æ•°ï¼Œè¾¹æ•°
+    int vexnum, edgenum;        // Í¼µÄ¶¥µãÊı£¬±ßÊı
     struct {
-        char city[MAX_STR_LEN]; // åŸå¸‚å
-        NodeLink *first;        // ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹
-    } v[MAX_VEX_NUM];           // åŸå¸‚åºå·v[i]
+        char city[MAX_STR_LEN]; // ³ÇÊĞÃû
+        NodeLink *first;        // µÚÒ»¸öÁÚ½Óµã
+    } v[MAX_VEX_NUM];           // ³ÇÊĞĞòºÅv[i]
 } CityMap;
 
-// è·å–ä¸¤ä¸ªæ—¶åˆ»çš„æ—¶é—´é—´éš”(t1 < t2, è¿”å›å€¼çš„å•ä½ä¸ºåˆ†é’Ÿ)
+// »ñÈ¡Á½¸öÊ±¿ÌµÄÊ±¼ä¼ä¸ô(t1 < t2, ·µ»ØÖµµÄµ¥Î»Îª·ÖÖÓ)
 int GetDurationTime(Time t1, Time t2);
 
 /*
-åŠŸèƒ½1ã€2ï¼šæ˜¾ç¤ºæ—¶åˆ»è¡¨å’Œèˆªç­è¡¨ã€‚ï¼ˆlxyï¼‰
-å…ˆè°ƒç”¨SetMapï¼Œç„¶åä»txtæ–‡ä»¶ä¸­æ‰“å°
+¹¦ÄÜ1¡¢2£ºÏÔÊ¾Ê±¿Ì±íºÍº½°à±í¡££¨lxy£©
+ÏÈµ÷ÓÃSetMap£¬È»ºó´ÓtxtÎÄ¼şÖĞ´òÓ¡
 FT: FlightTable.txt
 TT: TrainTable.txt
 */
 
-// ä¿å­˜æ•°æ®ï¼šæŠŠäº¤é€šå›¾çš„ä¿¡æ¯åˆ†åˆ«ä¿å­˜åˆ°TrainTable.txtå’ŒFlightTable.txtä¸­
-void SetMap(CityMap *CMap, FILE *TT, FILE *FT);
+// ±£´æÊı¾İ£º°Ñ½»Í¨Í¼µÄĞÅÏ¢·Ö±ğ±£´æµ½TrainTable.txtºÍFlightTable.txtÖĞ
+void SetMap(CityMap *CMap, char TTable[], char FTable[]);
 
-// è·å–æ•°æ®ï¼šæŠŠç°æœ‰çš„TrainTable.txtå’ŒFlightTable.txtä¸­çš„æ•°æ®å­˜å‚¨ä¸ºä¸€å¼ äº¤é€šå›¾
-CityMap *GetMap(FILE *TT, FILE *FT);
+// »ñÈ¡Êı¾İ£º°ÑÏÖÓĞµÄTrainTable.txtºÍFlightTable.txtÖĞµÄÊı¾İ´æ´¢ÎªÒ»ÕÅ½»Í¨Í¼
+CityMap *GetMap(char TTable[], char FTable[]);
 
-// æ˜¾ç¤ºåˆ—è½¦æ—¶åˆ»è¡¨
+// ÏÔÊ¾ÁĞ³µÊ±¿Ì±í
 void ShowTrainTable(CityMap *CMap, FILE *TT);
 
-// æ˜¾ç¤ºé£æœºèˆªç­è¡¨
+// ÏÔÊ¾·É»úº½°à±í
 void ShowFlightTable(CityMap *CMap, FILE *FT);
 
 /* 
-åŠŸèƒ½3ã€4ï¼šç¼–è¾‘è½¦æ¬¡åŠèˆªç­ä¿¡æ¯ã€‚ï¼ˆhkï¼‰
-è¿™é‡Œ**ä¸éœ€è¦**å’Œæ–‡ä»¶äº¤äº’ï¼Œä»æ§åˆ¶å°ä¸ŠæŒ‰ç…§è¾“å…¥è§„èŒƒä¾æ¬¡è¯¢é—®ç®¡ç†å‘˜å³å¯
+¹¦ÄÜ3¡¢4£º±à¼­³µ´Î¼°º½°àĞÅÏ¢¡££¨hk£©
+ÕâÀï**²»ĞèÒª**ºÍÎÄ¼ş½»»¥£¬´Ó¿ØÖÆÌ¨ÉÏ°´ÕÕÊäÈë¹æ·¶ÒÀ´ÎÑ¯ÎÊ¹ÜÀíÔ±¼´¿É
 */
 
-// ç¼–è¾‘è½¦æ¬¡ä¿¡æ¯ä¸»å‡½æ•°
+// ±à¼­³µ´ÎĞÅÏ¢Ö÷º¯Êı
 CityMap *EditTrain(CityMap *CMap);
 
-// æ·»åŠ è½¦æ¬¡
+// Ìí¼Ó³µ´Î
 CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// åˆ é™¤è½¦æ¬¡
+// É¾³ı³µ´Î
 CityMap *DelTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// ç¼–è¾‘èˆªç­ä¿¡æ¯ä¸»å‡½æ•°
+// ±à¼­º½°àĞÅÏ¢Ö÷º¯Êı
 CityMap *EditFlight(CityMap *CMap);
 
-// æ·»åŠ èˆªç­
+// Ìí¼Óº½°à
 CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-// åˆ é™¤èˆªç­
+// É¾³ıº½°à
 CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
-//è¾“å…¥æ— æ•ˆè·³å‡ºæç¤º
+//ÊäÈëÎŞĞ§Ìø³öÌáÊ¾
 void InvalidInputs(void);
 
-/* åŠŸèƒ½5ï¼šä¸ºä¹˜å®¢æä¾›æœ€ä¼˜å†³ç­–ã€‚ï¼ˆzyjï¼‰
-ä¸»å‡½æ•°ä¸­ä¾æ¬¡é—®ä¹˜å®¢å†³ç­–çš„ç›¸å…³ä¿¡æ¯ï¼Œå¹¶è·³è½¬åˆ°åé¢ä¸‰ä¸ªå‡½æ•°ä¹‹ä¸€ï¼Œä¸‹é¢ä¸‰ä¸ªå‡½æ•°æ‰çœŸæ­£å®ç°å…·ä½“ç®—æ³•
+/* ¹¦ÄÜ5£ºÎª³Ë¿ÍÌá¹©×îÓÅ¾ö²ß¡££¨zyj£©
+Ö÷º¯ÊıÖĞÒÀ´ÎÎÊ³Ë¿Í¾ö²ßµÄÏà¹ØĞÅÏ¢£¬²¢Ìø×ªµ½ºóÃæÈı¸öº¯ÊıÖ®Ò»£¬ÏÂÃæÈı¸öº¯Êı²ÅÕæÕıÊµÏÖ¾ßÌåËã·¨
 */
 
-// å†³ç­–ä¸»å‡½æ•°
+// ¾ö²ßÖ÷º¯Êı
 void Decision(CityMap *CMap);
 
-// æœ€çœæ—¶å†³ç­–(rule: æœ€ä¼˜å†³ç­–åŸåˆ™   transportation: äº¤é€šå·¥å…·)
+// ×îÊ¡Ê±¾ö²ß(rule: ×îÓÅ¾ö²ßÔ­Ôò   transportation: ½»Í¨¹¤¾ß)
 void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int transportation);
 
-// æœ€çœé’±å†³ç­–(rule: æœ€ä¼˜å†³ç­–åŸåˆ™   transportation: äº¤é€šå·¥å…·)
+// ×îÊ¡Ç®¾ö²ß(rule: ×îÓÅ¾ö²ßÔ­Ôò   transportation: ½»Í¨¹¤¾ß)
 void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportation);
 
-// ä¸­è½¬æ¬¡æ•°æœ€å°‘å†³ç­–(rule: æœ€ä¼˜å†³ç­–åŸåˆ™   transportation: äº¤é€šå·¥å…·)
+// ÖĞ×ª´ÎÊı×îÉÙ¾ö²ß(rule: ×îÓÅ¾ö²ßÔ­Ôò   transportation: ½»Í¨¹¤¾ß)
 void LeastExchange(CityMap *CMap, char departure[], char terminal[], int transportation);

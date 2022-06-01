@@ -1,41 +1,149 @@
 #include "NationalTrafficConsult.h"
+CityMap *TestData();
 
 int main(){
-    // è¿™é‡Œå†™ä¸ªå¥½çœ‹çš„æ¬¢è¿Žç•Œé¢ï¼Œè¿˜è¦æœ‰ä½œè€…ä¿¡æ¯
-    
-    FILE *TT = fopen("TrainTable.txt", "r+");
-    FILE *FT = fopen("FlightTable.txt", "r+");
-    CityMap *CMap = GetMap(TT, FT); // ä»Žæ–‡ä»¶ä¸­åˆå§‹åŒ–äº¤é€šå›¾
+    // ÕâÀïÐ´¸öºÃ¿´µÄ»¶Ó­½çÃæ£¬»¹ÒªÓÐ×÷ÕßÐÅÏ¢
+    char TTable[MAX_STR_LEN] = "TrainTable.txt";
+    char FTable[MAX_STR_LEN] = "FlightTable.txt";
+
+    // next few lines are used for test
+    CityMap *CMap = TestData();                 // Ê¹ÓÃ²âÊÔÊý¾Ý
+    SetMap(CMap, TTable, FTable);
+    // CityMap *CMap = GetMap(TTable, FTable);  // ´ÓÎÄ¼þÖÐ³õÊ¼»¯½»Í¨Í¼
 
     while(1){
-        printf("è¯·é€‰æ‹©åŠŸèƒ½ï¼š(1: æ˜¾ç¤ºåˆ—è½¦æ—¶åˆ»è¡¨  2: æ˜¾ç¤ºé£žæœºèˆªç­è¡¨  3: ç¼–è¾‘åˆ—è½¦æ—¶åˆ»è¡¨  4: ç¼–è¾‘é£žæœºèˆªç­è¡¨  5: è¿›è¡Œè·¯çº¿è§„åˆ’)\n");
+        printf("ÇëÑ¡Ôñ¹¦ÄÜ£º(1: ÏÔÊ¾ÁÐ³µÊ±¿Ì±í  2: ÏÔÊ¾·É»úº½°à±í  3: ±à¼­ÁÐ³µÊ±¿Ì±í  4: ±à¼­·É»úº½°à±í  5: ½øÐÐÂ·Ïß¹æ»®)\n");
         int func;
         scanf("%d",&func);
         getchar();
         switch (func){
             case 1:
-                ShowTrainTable(CMap, TT);
+                // ShowTrainTable(CMap, TTable);
                 break;
             case 2:
-                ShowFlightTable(CMap, FT);
+                // ShowFlightTable(CMap, FTable);
                 break;
             case 3:
-                CMap = EditTrain(CMap);
+                // CMap = EditTrain(CMap);
                 break;
             case 4:
-                CMap = EditFlight(CMap);
+                // CMap = EditFlight(CMap);
                 break;
             case 5:
-                Decision(CMap);
+                // Decision(CMap);
                 break;
             default:
-                printf("è¾“å…¥æ— æ•ˆï¼Œè¯·é‡æ–°è¾“å…¥ï¼\n");
+                printf("ÊäÈëÎÞÐ§£¬ÇëÖØÐÂÊäÈë£¡\n");
                 func=0;
                 continue;
         }
-        printf("æ‚¨æ˜¯å¦è¦ç»§ç»­ï¼Ÿ(Y: ç»§ç»­ N: é€€å‡º)\n");
+        printf("ÄúÊÇ·ñÒª¼ÌÐø£¿(Y: ¼ÌÐø N: ÍË³ö)\n");
         char c = getchar();
         getchar();
         if(c=='N') break;
     }
+}
+
+CityMap *TestData(){
+    CityMap *CMap=(CityMap *)malloc(sizeof(CityMap));
+    CMap->vexnum=3;
+    CMap->edgenum=6;
+    strncpy(CMap->v[0].city, "±±¾©     ", MAX_STR_LEN);
+    strncpy(CMap->v[1].city, "ÉÏº£     ", MAX_STR_LEN);
+    strncpy(CMap->v[2].city, "ÎÚÂ³Ä¾Æë   ", MAX_STR_LEN);
+    Time t;
+    NodeLink *p, *q;
+
+    p = malloc(sizeof(NodeLink));
+    p->vindex=1;
+    // ±±¾© -> ÉÏº££¬»ð³µ
+    p->info[0].tag=0;
+    t.hour=10;
+    t.minute=0;
+    p->info[0].start_time=t;
+    t.hour=15;
+    t.minute=0;
+    p->info[0].end_time=t;
+    p->info[0].cost=350;
+    p->info[0].duration=GetDurationTime(p->info[0].start_time, p->info[0].end_time);
+    strncpy(p->info[0].number, "T000101", 8);
+    CMap->v[0].first=p;
+    // ±±¾© -> ÉÏº££¬·É»ú
+    p->info[1].tag=1;
+    t.hour=10;
+    t.minute=0;
+    p->info[1].start_time=t;
+    t.hour=12;
+    t.minute=0;
+    p->info[1].end_time=t;
+    p->info[1].cost=550;
+    p->info[1].duration=GetDurationTime(p->info[1].start_time, p->info[1].end_time);
+    strncpy(p->info[1].number, "F000101", 8);
+    p->info[2].tag=-1;
+    q=p;
+
+    // ±±¾© -> ÎÚÂ³Ä¾Æë£¬»ð³µ
+    q->next = p = malloc(sizeof(NodeLink));
+    p->vindex=2;
+    p->info[0].tag=0;
+    t.hour=10;
+    t.minute=0;
+    p->info[0].start_time=t;
+    t.hour=19;
+    t.minute=0;
+    p->info[0].end_time=t;
+    p->info[0].cost=750;
+    p->info[0].duration=GetDurationTime(p->info[0].start_time, p->info[0].end_time);
+    strncpy(p->info[0].number, "T000201", 8);
+    p->info[1].tag=-1;
+    q=p;
+    q->next=NULL;
+
+    p = malloc(sizeof(NodeLink));
+    p->vindex=0;
+    // ÉÏº£ -> ±±¾©£¬»ð³µ
+    p->info[0].tag=0;
+    t.hour=11;
+    t.minute=0;
+    p->info[0].start_time=t;
+    t.hour=16;
+    t.minute=0;
+    p->info[0].end_time=t;
+    p->info[0].cost=350.50;
+    p->info[0].duration=GetDurationTime(p->info[0].start_time, p->info[0].end_time);
+    strncpy(p->info[0].number, "T010001", 8);
+    CMap->v[1].first = p;
+    // ÉÏº£ -> ±±¾©£¬·É»ú
+    p->info[1].tag=1;
+    t.hour=11;
+    t.minute=0;
+    p->info[1].start_time=t;
+    t.hour=13;
+    t.minute=0;
+    p->info[1].end_time=t;
+    p->info[1].cost=550.72;
+    p->info[1].duration=GetDurationTime(p->info[1].start_time, p->info[1].end_time);
+    strncpy(p->info[1].number, "F010001", 8);
+    p->info[2].tag=-1;
+    q=p;
+    p->next=NULL;
+
+    // ÎÚÂ³Ä¾Æë -> ÉÏº££¬·É»ú
+    CMap->v[2].first = p = malloc(sizeof(NodeLink));
+    p->vindex=1;
+    p->info[0].tag=1;
+    t.hour=13;
+    t.minute=0;
+    p->info[0].start_time=t;
+    t.hour=23;
+    t.minute=30;
+    p->info[0].end_time=t;
+    p->info[0].cost=860;
+    p->info[0].duration=GetDurationTime(p->info[0].start_time, p->info[0].end_time);
+    strncpy(p->info[0].number, "F020101", 8);
+    p->info[1].tag=-1;
+    q=p;
+    p->next=NULL;
+
+    return CMap;
 }
