@@ -15,6 +15,11 @@
   - 表结点 `NodeLink`
   - 车次/航班信息 `Info`
 
+## 规范（暂行）
+
+1. 不使用头结点，first直接指向第一个城市。
+2. 当tag为-1时，航班/车次数组到达底部。
+
 # 功能
 
 ![Flowchart](Flowchart.png)

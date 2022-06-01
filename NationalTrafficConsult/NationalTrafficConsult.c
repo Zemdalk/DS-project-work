@@ -1,39 +1,45 @@
 #include "NationalTrafficConsult.h"
+CityMap *TestData();
 
 int main(){
-    // è¿™é‡Œå†™ä¸ªå¥½çœ‹çš„æ¬¢è¿ç•Œé¢ï¼Œè¿˜è¦æœ‰ä½œè€…ä¿¡æ¯
-    
-    FILE *TT = fopen("TrainTable.txt", "r+");
-    FILE *FT = fopen("FlightTable.txt", "r+");
-    CityMap *CMap = GetMap(TT, FT); // ä»æ–‡ä»¶ä¸­åˆå§‹åŒ–äº¤é€šå›¾
+    // ÕâÀïĞ´¸öºÃ¿´µÄ»¶Ó­½çÃæ£¬»¹ÒªÓĞ×÷ÕßĞÅÏ¢
+    char TTable[MAX_STR_LEN] = "TrainTable.txt";
+    char FTable[MAX_STR_LEN] = "FlightTable.txt";
+
+    // next few lines are used for test (noted by lxy)
+    CityMap *CMap = TestData();                 // Ê¹ÓÃ²âÊÔÊı¾İTestData.c
+    SetMap(CMap, TTable, FTable);               // µ¼³öµ½ÎÄ¼ş
+
+    // next line is used for release file (noted by lxy)
+    // CityMap *CMap = GetMap(TTable, FTable);  // ´ÓÎÄ¼şÖĞ³õÊ¼»¯½»Í¨Í¼
 
     while(1){
-        printf("è¯·é€‰æ‹©åŠŸèƒ½ï¼š(1: æ˜¾ç¤ºåˆ—è½¦æ—¶åˆ»è¡¨  2: æ˜¾ç¤ºé£æœºèˆªç­è¡¨  3: ç¼–è¾‘åˆ—è½¦æ—¶åˆ»è¡¨  4: ç¼–è¾‘é£æœºèˆªç­è¡¨  5: è¿›è¡Œè·¯çº¿è§„åˆ’)\n");
+        printf("ÇëÑ¡Ôñ¹¦ÄÜ£º(1: ÏÔÊ¾ÁĞ³µÊ±¿Ì±í  2: ÏÔÊ¾·É»úº½°à±í  3: ±à¼­ÁĞ³µÊ±¿Ì±í  4: ±à¼­·É»úº½°à±í  5: ½øĞĞÂ·Ïß¹æ»®)\n");
         int func;
         scanf("%d",&func);
         getchar();
         switch (func){
             case 1:
-                ShowTrainTable(CMap, TT);
+                ShowTrainTable(CMap, TTable);
                 break;
             case 2:
-                ShowFlightTable(CMap, FT);
+                ShowFlightTable(CMap, FTable);
                 break;
             case 3:
-                CMap = EditTrain(CMap);
+                // CMap = EditTrain(CMap);
                 break;
             case 4:
-                CMap = EditFlight(CMap);
+                // CMap = EditFlight(CMap);
                 break;
             case 5:
-                Decision(CMap);
+                // Decision(CMap);
                 break;
             default:
-                printf("è¾“å…¥æ— æ•ˆï¼Œè¯·é‡æ–°è¾“å…¥ï¼\n");
+                printf("ÊäÈëÎŞĞ§£¬ÇëÖØĞÂÊäÈë£¡\n");
                 func=0;
                 continue;
         }
-        printf("æ‚¨æ˜¯å¦è¦ç»§ç»­ï¼Ÿ(Y: ç»§ç»­ N: é€€å‡º)\n");
+        printf("ÄúÊÇ·ñÒª¼ÌĞø£¿(Y: ¼ÌĞø N: ÍË³ö)\n");
         char c = getchar();
         getchar();
         if(c=='N') break;

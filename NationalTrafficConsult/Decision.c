@@ -1,15 +1,15 @@
 #include "NationalTrafficConsult.h"
 
 void Decision(CityMap *CMap){
-    // æµç¨‹ï¼š(ç”¨æˆ·è¾“å…¥å¯èƒ½ä¸åˆæ³•ï¼Œâ€œè¾“å…¥æ— æ•ˆï¼Œè¯·é‡æ–°è¾“å…¥ï¼â€)
-    // è¯·è¾“å…¥äº¤é€šå·¥å…·
-    // è¯·è¾“å…¥èµ·å§‹ç«™
-    // è¯·è¾“å…¥ç»ˆç‚¹ç«™
-    // æ‚¨å¸Œæœ›çš„å†³ç­–æ–¹å¼ï¼Ÿ(1/2/3)
-    // 1. ä¹˜åæ—¶é—´æœ€çŸ­
-    // 2. èŠ±è´¹æœ€å°‘
-    // 3. ä¸­è½¬æ¬¡æ•°æœ€å°‘
-    // ------ç„¶åŽè·³è½¬åˆ°ä¸‹é¢ä¸‰ä¸ªå‡½æ•°ä¹‹ä¸€
+    // Á÷³Ì£º(ÓÃ»§ÊäÈë¿ÉÄÜ²»ºÏ·¨£¬¡°ÊäÈëÎÞÐ§£¬ÇëÖØÐÂÊäÈë£¡¡±)
+    // ÇëÊäÈë½»Í¨¹¤¾ß
+    // ÇëÊäÈëÆðÊ¼Õ¾
+    // ÇëÊäÈëÖÕµãÕ¾
+    // ÄúÏ£ÍûµÄ¾ö²ß·½Ê½£¿(1/2/3)
+    // 1. ³Ë×øÊ±¼ä×î¶Ì
+    // 2. »¨·Ñ×îÉÙ
+    // 3. ÖÐ×ª´ÎÊý×îÉÙ
+    // ------È»ºóÌø×ªµ½ÏÂÃæÈý¸öº¯ÊýÖ®Ò»
 }
 
 void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int transportation){
