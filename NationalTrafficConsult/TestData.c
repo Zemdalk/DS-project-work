@@ -3,7 +3,7 @@
 * @Author: Lyu Xingyu
 * @Version: 1.1
 * @Date: 2022-06-01
-* @Description: ç”¨äºŽæµ‹è¯•çš„æ•°æ®é›†ï¼Œå¯éšæ—¶æ‰©å……
+* @Description: ÓÃÓÚ²âÊÔµÄÊý¾Ý¼¯£¬¿ÉËæÊ±À©³ä
 ********************************************************************************/
 
 #include "NationalTrafficConsult.h"
@@ -12,15 +12,15 @@ CityMap *TestData(){
     CityMap *CMap=(CityMap *)malloc(sizeof(CityMap));
     CMap->vexnum=3;
     CMap->edgenum=6;
-    strncpy(CMap->v[0].city, "åŒ—äº¬", MAX_STR_LEN);
-    strncpy(CMap->v[1].city, "ä¸Šæµ·", MAX_STR_LEN);
-    strncpy(CMap->v[2].city, "ä¹Œé²æœ¨é½", MAX_STR_LEN);
+    strncpy(CMap->v[0].city, "±±¾©", MAX_STR_LEN);
+    strncpy(CMap->v[1].city, "ÉÏº£", MAX_STR_LEN);
+    strncpy(CMap->v[2].city, "ÎÚÂ³Ä¾Æë", MAX_STR_LEN);
     Time t;
     NodeLink *p, *q;
 
     p = malloc(sizeof(NodeLink));
     p->vindex=1;
-    // åŒ—äº¬ -> ä¸Šæµ·ï¼Œç«è½¦
+    // ±±¾© -> ÉÏº££¬»ð³µ
     p->info[0].tag=0;
     t.hour=10;
     t.minute=0;
@@ -32,7 +32,7 @@ CityMap *TestData(){
     p->info[0].duration=GetDurationTime(p->info[0].start_time, p->info[0].end_time);
     strncpy(p->info[0].number, "T000101", 8);
     CMap->v[0].first=p;
-    // åŒ—äº¬ -> ä¸Šæµ·ï¼Œé£žæœº
+    // ±±¾© -> ÉÏº££¬·É»ú
     p->info[1].tag=1;
     t.hour=10;
     t.minute=0;
@@ -46,7 +46,7 @@ CityMap *TestData(){
     p->info[2].tag=-1;
     q=p;
 
-    // åŒ—äº¬ -> ä¹Œé²æœ¨é½ï¼Œç«è½¦
+    // ±±¾© -> ÎÚÂ³Ä¾Æë£¬»ð³µ
     q->next = p = malloc(sizeof(NodeLink));
     p->vindex=2;
     p->info[0].tag=0;
@@ -65,7 +65,7 @@ CityMap *TestData(){
 
     p = malloc(sizeof(NodeLink));
     p->vindex=0;
-    // ä¸Šæµ· -> åŒ—äº¬ï¼Œç«è½¦
+    // ÉÏº£ -> ±±¾©£¬»ð³µ
     p->info[0].tag=0;
     t.hour=11;
     t.minute=0;
@@ -77,7 +77,7 @@ CityMap *TestData(){
     p->info[0].duration=GetDurationTime(p->info[0].start_time, p->info[0].end_time);
     strncpy(p->info[0].number, "T010001", 8);
     CMap->v[1].first = p;
-    // ä¸Šæµ· -> åŒ—äº¬ï¼Œé£žæœº
+    // ÉÏº£ -> ±±¾©£¬·É»ú
     p->info[1].tag=1;
     t.hour=11;
     t.minute=0;
@@ -92,7 +92,7 @@ CityMap *TestData(){
     q=p;
     p->next=NULL;
 
-    // ä¹Œé²æœ¨é½ -> ä¸Šæµ·ï¼Œé£žæœº
+    // ÎÚÂ³Ä¾Æë -> ÉÏº££¬·É»ú
     CMap->v[2].first = p = malloc(sizeof(NodeLink));
     p->vindex=1;
     p->info[0].tag=1;
