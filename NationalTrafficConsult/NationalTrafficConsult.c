@@ -8,7 +8,7 @@ int main(){
 
     // next few lines are used for test
     CityMap *CMap = TestData();                 // 使用测试数据
-    SetMap(CMap, TTable, FTable);
+    SetMap(CMap, TTable, FTable);               // 导出到文件
     // CityMap *CMap = GetMap(TTable, FTable);  // 从文件中初始化交通图
 
     while(1){
@@ -18,10 +18,10 @@ int main(){
         getchar();
         switch (func){
             case 1:
-                // ShowTrainTable(CMap, TTable);
+                ShowTrainTable(CMap, TTable);
                 break;
             case 2:
-                // ShowFlightTable(CMap, FTable);
+                ShowFlightTable(CMap, FTable);
                 break;
             case 3:
                 // CMap = EditTrain(CMap);
@@ -48,9 +48,9 @@ CityMap *TestData(){
     CityMap *CMap=(CityMap *)malloc(sizeof(CityMap));
     CMap->vexnum=3;
     CMap->edgenum=6;
-    strncpy(CMap->v[0].city, "北京     ", MAX_STR_LEN);
-    strncpy(CMap->v[1].city, "上海     ", MAX_STR_LEN);
-    strncpy(CMap->v[2].city, "乌鲁木齐   ", MAX_STR_LEN);
+    strncpy(CMap->v[0].city, "北京", MAX_STR_LEN);
+    strncpy(CMap->v[1].city, "上海", MAX_STR_LEN);
+    strncpy(CMap->v[2].city, "乌鲁木齐", MAX_STR_LEN);
     Time t;
     NodeLink *p, *q;
 

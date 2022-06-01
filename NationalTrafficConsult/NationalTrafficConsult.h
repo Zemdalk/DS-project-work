@@ -56,10 +56,10 @@ void SetMap(CityMap *CMap, char TTable[], char FTable[]);
 CityMap *GetMap(char TTable[], char FTable[]);
 
 // 显示列车时刻表
-void ShowTrainTable(CityMap *CMap, FILE *TT);
+void ShowTrainTable(CityMap *CMap, char TTable[]);
 
 // 显示飞机航班表
-void ShowFlightTable(CityMap *CMap, FILE *FT);
+void ShowFlightTable(CityMap *CMap, char FTable[]);
 
 /* 
 功能3、4：编辑车次及航班信息。（hk）
