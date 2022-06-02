@@ -17,21 +17,21 @@ void SetMap(CityMap *CMap, char TTable[], char FTable[]){
                 Info info=nl->info[num];
                 if(info.tag==0)  fp=fopen(TTable, "a");
                 else fp=fopen(FTable, "a");
-                fprintf(fp, "%-s %-15s %-15s", info.number, departure, terminal);
-                char hr[2], min[2];
-                hr[0] = info.start_time.hour/10 + '0';
-                hr[1] = info.start_time.hour%10 + '0';
-                min[0] = info.start_time.minute/10 + '0';
-                min[1] = info.start_time.minute%10 + '0';
-                fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
-                hr[0] = info.end_time.hour/10 + '0';
-                hr[1] = info.end_time.hour%10 + '0';
-                min[0] = info.end_time.minute/10 + '0';
-                min[1] = info.end_time.minute%10 + '0';
-                fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
-                fprintf(fp, "%-11d ", info.duration);
-                fprintf(fp, "%-.2f\n", info.cost);
-
+                // fprintf(fp, "%-s %-15s %-15s", info.number, departure, terminal);
+                // char hr[2], min[2];
+                // hr[0] = info.start_time.hour/10 + '0';
+                // hr[1] = info.start_time.hour%10 + '0';
+                // min[0] = info.start_time.minute/10 + '0';
+                // min[1] = info.start_time.minute%10 + '0';
+                // fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
+                // hr[0] = info.end_time.hour/10 + '0';
+                // hr[1] = info.end_time.hour%10 + '0';
+                // min[0] = info.end_time.minute/10 + '0';
+                // min[1] = info.end_time.minute%10 + '0';
+                // fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
+                // fprintf(fp, "%-11d ", info.duration);
+                // fprintf(fp, "%-.2f\n", info.cost);
+                PrintLine(info, departure, terminal, fp);
                 fclose(fp);
             }
             nl=nl->next;
@@ -156,4 +156,21 @@ void ShowFlightTable(CityMap *CMap, char FTable[]){
         printf("%s\n", buff, len-1);
     }
     fclose(pf);
+}
+
+void PrintLine(Info info, char departure[], char terminal[], FILE *fp){
+    fprintf(fp, "%-s %-15s %-15s", info.number, departure, terminal);
+    char hr[2], min[2];
+    hr[0] = info.start_time.hour/10 + '0';
+    hr[1] = info.start_time.hour%10 + '0';
+    min[0] = info.start_time.minute/10 + '0';
+    min[1] = info.start_time.minute%10 + '0';
+    fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
+    hr[0] = info.end_time.hour/10 + '0';
+    hr[1] = info.end_time.hour%10 + '0';
+    min[0] = info.end_time.minute/10 + '0';
+    min[1] = info.end_time.minute%10 + '0';
+    fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
+    fprintf(fp, "%-11d ", info.duration);
+    fprintf(fp, "%-.2f\n", info.cost);
 }

@@ -58,6 +58,9 @@ void SetMap(CityMap *CMap, char TTable[], char FTable[]);
 // 获取数据：把现有的TrainTable.txt和FlightTable.txt中的数据存储为一张交通图
 CityMap *GetMap(char TTable[], char FTable[]);
 
+// 打印一行数据，按照文件输入规范打印。如果向控制台打印，第四个参数传stdout
+void PrintLine(Info info, char departure[], char terminal[], FILE *fp);
+
 // 显示列车时刻表
 void ShowTrainTable(CityMap *CMap, char TTable[]);
 
