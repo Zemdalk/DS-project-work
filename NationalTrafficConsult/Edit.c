@@ -48,7 +48,7 @@ CityMap *EditTrain(CityMap *CMap){
 
     Time start_time;
     while(1){
-        printf("请输入出发时间\n");
+        printf("请输入出发时间(时间格式为xx： xx)\n");
         char sh1,sh2,c1,c2,sm1,sm2;
         scanf("%c%c%c%c %c%c",&sh1,&sh2,&c1,&c2,&sm1,&sm2);
         char c=getchar();
@@ -62,7 +62,7 @@ CityMap *EditTrain(CityMap *CMap){
 
     Time end_time;
     while(1){
-        printf("请输入到达时间\n");
+        printf("请输入到达时间(时间格式为xx： xx)\n");
         char eh1,eh2,c3,c4,em1,em2;
         scanf("%c%c%c%c %c%c",&eh1,&eh2,&c3,&c4,&em1,&em2);
         getchar();
@@ -82,7 +82,7 @@ CityMap *EditTrain(CityMap *CMap){
         getchar();
         int i;
         for(i=0;cost_str[i]!='\0';i++){
-            if(cost_str[i]<'0' || cost_str[i]>'9')
+            if((cost_str[i]<'0' || cost_str[i]>'9') && cost_str[i]!='.')
                 break;
         }
         if(cost_str[i]=='\0'){
@@ -125,9 +125,9 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
     switch (addvex){
         case 1:{
             NodeLink *p=CMap->v[depvertex].first;
-            while(p->vindex!=tervertex && p->next!=NULL)
+            while(p && p->vindex!=tervertex && p->next!=NULL)
                 p=p->next;
-            if(p->next==NULL){
+            if(p==NULL || p->next==NULL){
                 //这两个地方原本没有边，需要新建线路(节点)
                 NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
                 q->vindex=tervertex;
@@ -160,9 +160,10 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
         }
         case 2:{
             strcpy(CMap->v[tervertex].city,terminal);
+            CMap->v[tervertex].first=NULL;
             CMap->vexnum++;
             NodeLink *p=CMap->v[depvertex].first;//一定是新建一个节点
-            while(p->next!=NULL)
+            while(p && p->next!=NULL)
                 p=p->next;
             NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
             q->vindex=tervertex;
@@ -179,6 +180,7 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
         }
         case 3:{
             strcpy(CMap->v[depvertex].city,departure);
+            CMap->v[depvertex].first=NULL;
             CMap->vexnum++;
             NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
             q->vindex=tervertex;
@@ -195,9 +197,11 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
         }
         case 4:{
             strcpy(CMap->v[depvertex].city,departure);
+            CMap->v[depvertex].first=NULL;
             CMap->vexnum++;
             tervertex=CMap->vexnum;
             strcpy(CMap->v[tervertex].city,terminal);
+            CMap->v[tervertex].first=NULL;
             CMap->vexnum++;
             NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
             q->vindex=tervertex;
@@ -308,7 +312,7 @@ CityMap *EditFlight(CityMap *CMap){
 
     Time start_time;
     while(1){
-        printf("请输入出发时间\n");
+        printf("请输入出发时间(时间格式为xx： xx)\n");
         char sh1,sh2,c1,c2,sm1,sm2;
         scanf("%c%c%c%c %c%c",&sh1,&sh2,&c1,&c2,&sm1,&sm2);
         char c=getchar();
@@ -322,7 +326,7 @@ CityMap *EditFlight(CityMap *CMap){
 
     Time end_time;
     while(1){
-        printf("请输入到达时间\n");
+        printf("请输入到达时间(时间格式为xx： xx)\n");
         char eh1,eh2,c3,c4,em1,em2;
         scanf("%c%c%c%c %c%c",&eh1,&eh2,&c3,&c4,&em1,&em2);
         getchar();
@@ -342,7 +346,7 @@ CityMap *EditFlight(CityMap *CMap){
         getchar();
         int i;
         for(i=0;cost_str[i]!='\0';i++){
-            if(cost_str[i]<'0' || cost_str[i]>'9')
+            if((cost_str[i]<'0' || cost_str[i]>'9') && cost_str[i]!='.')
                 break;
         }
         if(cost_str[i]=='\0'){
@@ -385,9 +389,9 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
     switch (addvex){
         case 1:{
             NodeLink *p=CMap->v[depvertex].first;
-            while(p->vindex!=tervertex && p->next!=NULL)
+            while(p && p->vindex!=tervertex && p->next!=NULL)
                 p=p->next;
-            if(p->next==NULL){
+            if(p==NULL || p->next==NULL){
                 //这两个地方原本没有边，需要新建线路(节点)
                 NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
                 q->vindex=tervertex;
@@ -404,9 +408,9 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
             else{
                 //这两个地方原本有边
                 int totalnum;//需要确定这两个地方原来有多少条总线路
-                int num=1;//需要确定这两个地方原来有几条火车线路
+                int num=1;//需要确定这两个地方原来有几条飞机线路
                 for(totalnum=0;p->info[totalnum].tag!=-1;totalnum++)
-                    if(p->info[totalnum].tag==0)
+                    if(p->info[totalnum].tag==1)
                         num++;
                 p->info[totalnum].tag=1;
                 p->info[totalnum+1].tag=-1;
@@ -420,9 +424,10 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
         }
         case 2:{
             strcpy(CMap->v[tervertex].city,terminal);
+            CMap->v[tervertex].first=NULL;
             CMap->vexnum++;
             NodeLink *p=CMap->v[depvertex].first;//一定是新建一个节点
-            while(p->next!=NULL)
+            while(p && p->next!=NULL)
                 p=p->next;
             NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
             q->vindex=tervertex;
@@ -439,6 +444,7 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
         }
         case 3:{
             strcpy(CMap->v[depvertex].city,departure);
+            CMap->v[depvertex].first=NULL;
             CMap->vexnum++;
             NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
             q->vindex=tervertex;
@@ -455,9 +461,11 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
         }
         case 4:{
             strcpy(CMap->v[depvertex].city,departure);
+            CMap->v[depvertex].first=NULL;
             CMap->vexnum++;
             tervertex=CMap->vexnum;
             strcpy(CMap->v[tervertex].city,terminal);
+            CMap->v[tervertex].first=NULL;
             CMap->vexnum++;
             NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
             q->vindex=tervertex;

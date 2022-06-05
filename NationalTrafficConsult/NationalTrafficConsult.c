@@ -30,7 +30,7 @@ int main(){
                 CMap = EditTrain(CMap);
                 break;
             case 4:
-                // CMap = EditFlight(CMap);
+                CMap = EditFlight(CMap);
                 break;
             case 5:
                 // Decision(CMap);
