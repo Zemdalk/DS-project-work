@@ -90,6 +90,18 @@ CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_
 //输入无效跳出提示
 void InvalidInputs(void);
 
+//删除火车时未找到
+void NotFoundT(void);
+
+//删除飞机时未找到
+void NotFoundF(void);
+
+//创建火车、飞机编号
+void CreateNumber(char number[], int tag, int depvexnum, int tervexnum, int num);
+
+//创建编号时调用：将数字转换为字符串
+void numtostr(int num, char *str);
+
 /* 功能5：为乘客提供最优决策。（zyj）
 主函数中依次问乘客决策的相关信息，并跳转到后面三个函数之一，下面三个函数才真正实现具体算法
 */
