@@ -44,6 +44,7 @@ void SetMap(CityMap *CMap, char TTable[], char FTable[]){
 CityMap *GetMap(char TTable[], char FTable[]){
     // ...
     CityMap *CMap = malloc(sizeof(CityMap));
+    CMap->edgenum = CMap->vexnum = 0;
     FILE *pf = fopen(TTable, "r");
     char number[8]="";
     char departure[MAX_STR_LEN]="", terminal[MAX_STR_LEN]="";
