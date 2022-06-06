@@ -36,66 +36,72 @@ CityMap *EditTrain(CityMap *CMap){
     }
     getchar();
 
-    char departure[MAX_STR_LEN];
-    printf("请输入起始站\n");
-    scanf("%s",departure);
-    getchar();
-
-    char terminal[MAX_STR_LEN];
-    printf("请输入终点站\n");
-    scanf("%s",terminal);
-    getchar();
-
-    Time start_time;
-    while(1){
-        printf("请输入出发时间(时间格式为xx： xx)\n");
-        char sh1,sh2,c1,c2,sm1,sm2;
-        scanf("%c%c%c%c %c%c",&sh1,&sh2,&c1,&c2,&sm1,&sm2);
-        char c=getchar();
-        start_time.hour = (sh1-'0')*10+(sh2-'0');
-        start_time.minute = (sm1-'0')*10+(sm2-'0');
-        if(start_time.hour>=0 && start_time.hour<24 && start_time.minute>=0 && start_time.minute<60)
-            break;
-        else
-            InvalidInputs();
-    }
-
-    Time end_time;
-    while(1){
-        printf("请输入到达时间(时间格式为xx： xx)\n");
-        char eh1,eh2,c3,c4,em1,em2;
-        scanf("%c%c%c%c %c%c",&eh1,&eh2,&c3,&c4,&em1,&em2);
+    if(choice==1){
+        char departure[MAX_STR_LEN];
+        printf("请输入起始站\n");
+        scanf("%s",departure);
         getchar();
-        end_time.hour = (eh1-'0')*10+(eh2-'0');
-        end_time.minute = (em1-'0')*10+(em2-'0');
-        if(end_time.hour>=0 && end_time.hour<24 && end_time.minute>=0 && end_time.minute<60)
-            break;
-        else
-            InvalidInputs();
-    }
 
-    char cost_str[MAX_STR_LEN];
-    double cost;
-    while(1){
-        printf("请输入票价\n");
-        scanf("%s",cost_str);
+        char terminal[MAX_STR_LEN];
+        printf("请输入终点站\n");
+        scanf("%s",terminal);
         getchar();
-        int i;
-        for(i=0;cost_str[i]!='\0';i++){
-            if((cost_str[i]<'0' || cost_str[i]>'9') && cost_str[i]!='.')
+
+        Time start_time;
+        while(1){
+            printf("请输入出发时间(时间格式为xx： xx)\n");
+            char sh1,sh2,c1,c2,sm1,sm2;
+            scanf("%c%c%c%c %c%c",&sh1,&sh2,&c1,&c2,&sm1,&sm2);
+            char c=getchar();
+            start_time.hour = (sh1-'0')*10+(sh2-'0');
+            start_time.minute = (sm1-'0')*10+(sm2-'0');
+            if(start_time.hour>=0 && start_time.hour<24 && start_time.minute>=0 && start_time.minute<60)
                 break;
+            else
+                InvalidInputs();
         }
-        if(cost_str[i]=='\0'){
-            cost=atof(cost_str);
-            break;
+
+        Time end_time;
+        while(1){
+            printf("请输入到达时间(时间格式为xx： xx)\n");
+            char eh1,eh2,c3,c4,em1,em2;
+            scanf("%c%c%c%c %c%c",&eh1,&eh2,&c3,&c4,&em1,&em2);
+            getchar();
+            end_time.hour = (eh1-'0')*10+(eh2-'0');
+            end_time.minute = (em1-'0')*10+(em2-'0');
+            if(end_time.hour>=0 && end_time.hour<24 && end_time.minute>=0 && end_time.minute<60)
+                break;
+            else
+                InvalidInputs();
         }
-        else
-            InvalidInputs();
-    }
-    if(choice==1)
+
+        char cost_str[MAX_STR_LEN];
+        double cost;
+        while(1){
+            printf("请输入票价\n");
+            scanf("%s",cost_str);
+            getchar();
+            int i;
+            for(i=0;cost_str[i]!='\0';i++){
+                if((cost_str[i]<'0' || cost_str[i]>'9') && cost_str[i]!='.')
+                    break;
+            }
+            if(cost_str[i]=='\0'){
+                cost=atof(cost_str);
+                break;
+            }
+            else
+                InvalidInputs();
+        }
         AddTrain(CMap,departure,terminal,start_time,end_time,cost);
-    if(choice==2)
-        DelTrain(CMap,departure,terminal,start_time,end_time,cost);
+        return CMap;
+    }
+    else if(choice==2)
+        printf("请输入您要删除的车次的编号\n");
+        char number[MAX_STR_LEN];
+        scanf("%s",number);
+        getchar();
+        DelTrain(CMap,number);
     return CMap;
 }
 
@@ -138,8 +144,14 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
                 q->info[0].start_time=start_time;
                 q->info[0].end_time=end_time;
                 q->info[0].duration=GetDurationTime(start_time,end_time);
-                q->next=p->next;
-                p->next=q;
+                if(p==NULL){
+                    q->next=NULL;
+                    p=q;
+                }
+                else{
+                    q->next=p->next;
+                    p->next=q;
+                }
             }
             else{
                 //这两个地方原本有边
@@ -174,8 +186,14 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
             q->info[0].start_time=start_time;
             q->info[0].end_time=end_time;
             q->info[0].duration=GetDurationTime(start_time,end_time);
-            q->next=p->next;
-            p->next=q;
+            if(p==NULL){
+                p=q;
+                q->next=NULL;
+            }
+            else{
+                q->next=p->next;
+                p->next=q;
+            }
             break;
         }
         case 3:{
@@ -222,8 +240,8 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
     return CMap;
 }
 
-CityMap *DelTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost){
-    int depvertex;//始发地在表头数组中的序号
+CityMap *DelTrain(CityMap *CMap, char number[]){
+    /*int depvertex;//始发地在表头数组中的序号
     for(depvertex=0;depvertex<CMap->vexnum;depvertex++){
         if(strcmp(departure,CMap->v[depvertex].city)==0)
             break;
@@ -272,6 +290,57 @@ CityMap *DelTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
         num++;
     }
     p->info[num].tag=-1;
+    return CMap;*/
+    //original version of DelTrain
+
+    if(number[0]!='T'){
+        NotFoundT();
+        return CMap;
+    }
+    int depvertex;
+    int tervertex;
+    depvertex=(number[1]-'0')*10+(number[2]-'0');
+    tervertex=(number[3]-'0')*10+(number[4]-'0');
+    if(depvertex>=CMap->vexnum || tervertex>=CMap->vexnum || depvertex==tervertex){
+        NotFoundT();
+        return CMap;
+    }
+
+    NodeLink *p=CMap->v[depvertex].first;
+    if(p==NULL){
+        NotFoundT();
+        return CMap;
+    }
+    while(p->vindex!=tervertex && p->next!=NULL)
+        p=p->next;
+    if(p->vindex!=tervertex && p->next==NULL){
+        NotFoundT();
+        return CMap;
+    }
+
+    int num=0;
+    while(p->info[num].tag!=-1){
+        if(strcmp(number,p->info[num].number)==0)
+            break;
+        num++;
+    }
+    if(p->info[num].tag==-1){
+        NotFoundT();
+        return CMap;
+    }
+
+    while(p->info[num+1].tag!=-1){
+        p->info[num].tag=p->info[num+1].tag;
+        strcpy(p->info[num].number,p->info[num+1].number);
+        p->info[num].cost=p->info[num+1].cost;
+        p->info[num].start_time.hour=p->info[num+1].start_time.hour;
+        p->info[num].start_time.minute=p->info[num+1].start_time.minute;
+        p->info[num].end_time.hour=p->info[num+1].end_time.hour;
+        p->info[num].end_time.minute=p->info[num+1].end_time.minute;
+        p->info[num].cost=p->info[num+1].cost;
+        num++;
+    }
+    p->info[num].tag=-1;
     return CMap;
 }
 
@@ -300,66 +369,72 @@ CityMap *EditFlight(CityMap *CMap){
     }
     getchar();
 
-    char departure[MAX_STR_LEN];
-    printf("请输入起始站\n");
-    scanf("%s",departure);
-    getchar();
-
-    char terminal[MAX_STR_LEN];
-    printf("请输入终点站\n");
-    scanf("%s",terminal);
-    getchar();
-
-    Time start_time;
-    while(1){
-        printf("请输入出发时间(时间格式为xx： xx)\n");
-        char sh1,sh2,c1,c2,sm1,sm2;
-        scanf("%c%c%c%c %c%c",&sh1,&sh2,&c1,&c2,&sm1,&sm2);
-        char c=getchar();
-        start_time.hour = (sh1-'0')*10+(sh2-'0');
-        start_time.minute = (sm1-'0')*10+(sm2-'0');
-        if(start_time.hour>=0 && start_time.hour<24 && start_time.minute>=0 && start_time.minute<60)
-            break;
-        else
-            InvalidInputs();
-    }
-
-    Time end_time;
-    while(1){
-        printf("请输入到达时间(时间格式为xx： xx)\n");
-        char eh1,eh2,c3,c4,em1,em2;
-        scanf("%c%c%c%c %c%c",&eh1,&eh2,&c3,&c4,&em1,&em2);
+    if(choice==1){
+        char departure[MAX_STR_LEN];
+        printf("请输入起始站\n");
+        scanf("%s",departure);
         getchar();
-        end_time.hour = (eh1-'0')*10+(eh2-'0');
-        end_time.minute = (em1-'0')*10+(em2-'0');
-        if(end_time.hour>=0 && end_time.hour<24 && end_time.minute>=0 && end_time.minute<60)
-            break;
-        else
-            InvalidInputs();
-    }
 
-    char cost_str[MAX_STR_LEN];
-    double cost;
-    while(1){
-        printf("请输入票价\n");
-        scanf("%s",cost_str);
+        char terminal[MAX_STR_LEN];
+        printf("请输入终点站\n");
+        scanf("%s",terminal);
         getchar();
-        int i;
-        for(i=0;cost_str[i]!='\0';i++){
-            if((cost_str[i]<'0' || cost_str[i]>'9') && cost_str[i]!='.')
+
+        Time start_time;
+        while(1){
+            printf("请输入出发时间(时间格式为xx： xx)\n");
+            char sh1,sh2,c1,c2,sm1,sm2;
+            scanf("%c%c%c%c %c%c",&sh1,&sh2,&c1,&c2,&sm1,&sm2);
+            char c=getchar();
+            start_time.hour = (sh1-'0')*10+(sh2-'0');
+            start_time.minute = (sm1-'0')*10+(sm2-'0');
+            if(start_time.hour>=0 && start_time.hour<24 && start_time.minute>=0 && start_time.minute<60)
                 break;
+            else
+                InvalidInputs();
         }
-        if(cost_str[i]=='\0'){
-            cost=atof(cost_str);
-            break;
+
+        Time end_time;
+        while(1){
+            printf("请输入到达时间(时间格式为xx： xx)\n");
+            char eh1,eh2,c3,c4,em1,em2;
+            scanf("%c%c%c%c %c%c",&eh1,&eh2,&c3,&c4,&em1,&em2);
+            getchar();
+            end_time.hour = (eh1-'0')*10+(eh2-'0');
+            end_time.minute = (em1-'0')*10+(em2-'0');
+            if(end_time.hour>=0 && end_time.hour<24 && end_time.minute>=0 && end_time.minute<60)
+                break;
+            else
+                InvalidInputs();
         }
-        else
-            InvalidInputs();
-    }
-    if(choice==1)
+
+        char cost_str[MAX_STR_LEN];
+        double cost;
+        while(1){
+            printf("请输入票价\n");
+            scanf("%s",cost_str);
+            getchar();
+            int i;
+            for(i=0;cost_str[i]!='\0';i++){
+                if((cost_str[i]<'0' || cost_str[i]>'9') && cost_str[i]!='.')
+                    break;
+            }
+            if(cost_str[i]=='\0'){
+                cost=atof(cost_str);
+                break;
+            }
+            else
+                InvalidInputs();
+        }
         AddFlight(CMap,departure,terminal,start_time,end_time,cost);
-    if(choice==2)
-        DelFlight(CMap,departure,terminal,start_time,end_time,cost);
+        return CMap;
+    }
+    else if(choice==2)
+        printf("请输入您要删除的航班的编号\n");
+        char number[MAX_STR_LEN];
+        scanf("%s",number);
+        getchar();
+        DelFlight(CMap,number);
     return CMap;
 }
 
@@ -402,8 +477,14 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
                 q->info[0].start_time=start_time;
                 q->info[0].end_time=end_time;
                 q->info[0].duration=GetDurationTime(start_time,end_time);
-                q->next=p->next;
-                p->next=q;
+                if(p==NULL){
+                    q->next=NULL;
+                    p=q;
+                }
+                else{
+                    q->next=p->next;
+                    p->next=q;
+                }
             }
             else{
                 //这两个地方原本有边
@@ -438,8 +519,14 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
             q->info[0].start_time=start_time;
             q->info[0].end_time=end_time;
             q->info[0].duration=GetDurationTime(start_time,end_time);
-            q->next=p->next;
-            p->next=q;
+            if(p==NULL){
+                p=q;
+                q->next=NULL;
+            }
+            else{
+                q->next=p->next;
+                p->next=q;
+            }
             break;
         }
         case 3:{
@@ -486,23 +573,25 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
     return CMap;
 }
 
-CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost){
-    int depvertex;//始发地在表头数组中的序号
-    for(depvertex=0;depvertex<CMap->vexnum;depvertex++){
-        if(strcmp(departure,CMap->v[depvertex].city)==0)
-            break;
+CityMap *DelFlight(CityMap *CMap, char number[]){
+    if(number[0]!='F'){
+        NotFoundF();
+        return CMap;
     }
-    int tervertex;//到达地在表头数组中的序号
-    for(tervertex=0;tervertex<CMap->vexnum;tervertex++){
-        if(strcmp(terminal,CMap->v[tervertex].city)==0)
-            break;
-    }
-    if(depvertex==CMap->vexnum || tervertex==CMap->vexnum){
+    int depvertex;
+    int tervertex;
+    depvertex=(number[1]-'0')*10+(number[2]-'0');
+    tervertex=(number[3]-'0')*10+(number[4]-'0');
+    if(depvertex>=CMap->vexnum || tervertex>=CMap->vexnum || depvertex==tervertex){
         NotFoundF();
         return CMap;
     }
 
     NodeLink *p=CMap->v[depvertex].first;
+    if(p==NULL){
+        NotFoundF();
+        return CMap;
+    }
     while(p->vindex!=tervertex && p->next!=NULL)
         p=p->next;
     if(p->vindex!=tervertex && p->next==NULL){
@@ -510,17 +599,14 @@ CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_
         return CMap;
     }
 
-    int num;
-    Info *current=p->info;
-    for(num=0;current[num].tag!=-1;num++){
-        if(current[num].tag==1 && current[num].start_time.hour==start_time.hour \
-        && current[num].start_time.minute==start_time.minute \
-        && current[num].end_time.hour==end_time.hour \
-        && current[num].end_time.minute==end_time.minute && current[num].cost==cost)
+    int num=0;
+    while(p->info[num].tag!=-1){
+        if(strcmp(number,p->info[num].number)==0)
             break;
+        num++;
     }
-    if(current[num].tag==-1){
-        NotFoundT();
+    if(p->info[num].tag==-1){
+        NotFoundF();
         return CMap;
     }
 

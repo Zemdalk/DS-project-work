@@ -76,7 +76,7 @@ CityMap *EditTrain(CityMap *CMap);
 CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
 // 删除车次
-CityMap *DelTrain(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
+CityMap *DelTrain(CityMap *CMap, char number[]);
 
 // 编辑航班信息主函数
 CityMap *EditFlight(CityMap *CMap);
@@ -85,7 +85,7 @@ CityMap *EditFlight(CityMap *CMap);
 CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
 
 // 删除航班
-CityMap *DelFlight(CityMap *CMap, char departure[], char terminal[], Time start_time, Time end_time, double cost);
+CityMap *DelFlight(CityMap *CMap, char number[]);
 
 //输入无效跳出提示
 void InvalidInputs(void);
