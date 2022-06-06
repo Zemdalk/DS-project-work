@@ -7,11 +7,10 @@ int main(){
     char FTable[MAX_STR_LEN] = "FlightTable.txt";
 
     // next few lines are used for test (noted by lxy)
-    CityMap *CMap = TestData();                 // 使用测试数据TestData.c
-    // SetMap(CMap, TTable, FTable);               // 导出到文件
+    // CityMap *CMap = TestData();                 // 使用测试数据TestData.c
 
     // next line is used for release file (noted by lxy)
-    // CMap = GetMap(TTable, FTable);  // 从文件中初始化交通图
+    CityMap *CMap = GetMap(TTable, FTable);  // 从文件中初始化交通图
 
     while(1){
         SetMap(CMap, TTable, FTable);
