@@ -5,7 +5,8 @@
 
 #define MAX_STR_LEN 500     // 字符串最大长度
 #define MAX_VEX_NUM 100     // (城市交通)图中最大顶点数目
-#define MAX_INFO 100         // 最大航班及车次数量和
+#define MAX_INFO 100        // 最大航班及车次数量和
+#define MAX_PAGE_LINES 10   // 打印时刻表时，每页的最大行数
 
 // 时间的规整格式
 typedef struct Time{
@@ -64,8 +65,14 @@ void PrintLine(Info info, char departure[], char terminal[], FILE *fp);
 // 显示列车时刻表
 void ShowTrainTable(CityMap *CMap, char TTable[]);
 
+// 按页码显示列车时刻表
+void ShowTrainTableByPage(CityMap *CMap, char TTable[], int offset, int totalpage);
+
 // 显示飞机航班表
 void ShowFlightTable(CityMap *CMap, char FTable[]);
+
+// 按页码显示飞机航班表
+void ShowFlightTableByPage(CityMap *CMap, char FTable[], int offset, int totalpage);
 
 /* 
 功能3、4：编辑车次及航班信息。（hk）

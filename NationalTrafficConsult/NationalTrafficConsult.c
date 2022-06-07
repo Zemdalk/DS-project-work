@@ -36,7 +36,7 @@ int main(){
                 // Decision(CMap);
                 break;
             default:
-                printf("输入无效，请重新输入！\n");
+                InvalidInputs();
                 func=0;
                 continue;
         }

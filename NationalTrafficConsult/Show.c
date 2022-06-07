@@ -17,20 +17,6 @@ void SetMap(CityMap *CMap, char TTable[], char FTable[]){
                 Info info=nl->info[num];
                 if(info.tag==0)  fp=fopen(TTable, "a");
                 else fp=fopen(FTable, "a");
-                // fprintf(fp, "%-s %-15s %-15s", info.number, departure, terminal);
-                // char hr[2], min[2];
-                // hr[0] = info.start_time.hour/10 + '0';
-                // hr[1] = info.start_time.hour%10 + '0';
-                // min[0] = info.start_time.minute/10 + '0';
-                // min[1] = info.start_time.minute%10 + '0';
-                // fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
-                // hr[0] = info.end_time.hour/10 + '0';
-                // hr[1] = info.end_time.hour%10 + '0';
-                // min[0] = info.end_time.minute/10 + '0';
-                // min[1] = info.end_time.minute%10 + '0';
-                // fprintf(fp, "%c%c: %c%c   ", hr[0], hr[1], min[0], min[1]);
-                // fprintf(fp, "%-11d ", info.duration);
-                // fprintf(fp, "%-.2f\n", info.cost);
                 PrintLine(info, departure, terminal, fp);
                 fclose(fp);
             }
@@ -96,6 +82,61 @@ CityMap *GetMap(char TTable[], char FTable[]){
 }
 
 void ShowTrainTable(CityMap *CMap, char TTable[]){
+    int totalpage=0;
+
+    FILE *pf=fopen(TTable, "r");
+    int len;
+    char buff[MAX_STR_LEN];
+    while(fgets(buff, MAX_STR_LEN, pf) != NULL){
+        len=strlen(buff);
+        buff[len-1]='\0';  // 去除换行符
+        totalpage++;
+    }
+    if(totalpage % MAX_PAGE_LINES){
+        totalpage /= MAX_PAGE_LINES;
+    }else{
+        totalpage /= MAX_PAGE_LINES;
+        totalpage--;
+    }
+    if(totalpage == -1) totalpage++; // 空表totalpage计算为-1，特殊处理为0
+    fclose(pf);
+
+    // totalpage: 总页码数，从0开始计数，恒比真实的总页码数小1
+    // offset: 页码序号，从0开始计数，恒比真实的页码序号小1
+    // func: 选择的功能
+    int offset=0, func;
+    ShowTrainTableByPage(CMap, TTable, offset, totalpage);
+    do{
+        printf("请选择……\n");
+        printf("(1. 上一页  2. 下一页  3. 跳转到指定页码  4. 退出)\n");
+        scanf("%d", &func); getchar();
+        if(func == 4) break;
+        else if((func == 1 && offset == 0) || (func == 2 && offset == totalpage)){
+            InvalidInputs();
+            continue;
+        }else if(func == 1){
+            offset--;
+        }else if(func == 2){
+            offset++;
+        }else if(func == 3){
+            printf("请输入您要跳转到的页码: \n");
+            scanf("%d", &offset); getchar();
+            offset--;
+            if (!(offset >= 0 && offset <= totalpage)){
+                InvalidInputs();
+                continue;
+            }
+        }else if(!(func >= 1 && func <= 4)){
+            InvalidInputs();
+            continue;
+        }
+
+        ShowTrainTableByPage(CMap, TTable, offset, totalpage);
+
+    }while(1);
+}
+
+void ShowTrainTableByPage(CityMap *CMap, char TTable[], int offset, int totalpage){
     int i;
     for(i=0;i<79;i++) printf("=");
     printf("\n");
@@ -117,17 +158,85 @@ void ShowTrainTable(CityMap *CMap, char TTable[]){
     printf("\n");
 
     FILE *pf=fopen(TTable, "r");
+    int len, counter=0;
+    char buff[MAX_STR_LEN];
+    while(fgets(buff, MAX_STR_LEN, pf) != NULL){
+        len=strlen(buff);
+        buff[len-1]='\0';  // 去除换行符
+        if(counter >= (offset * MAX_PAGE_LINES) && counter < ((offset + 1) * MAX_PAGE_LINES)) 
+            printf("%s\n", buff);
+        counter++;
+        if(counter >= ((offset + 1) * MAX_PAGE_LINES)) break;
+    }
+
+    for(i=0;i<79;i++) printf("=");
+    printf("\n");
+    for(i=0;i<31;i++) printf(" ");
+    printf("第 %d 页，共 %d 页", offset + 1, totalpage + 1);
+    for(i=0;i<31;i++) printf(" ");
+    printf("\n");
+    for(i=0;i<79;i++) printf("=");
+    printf("\n");
+
+    fclose(pf);
+}
+
+void ShowFlightTable(CityMap *CMap, char FTable[]){
+    int totalpage=0;
+
+    FILE *pf=fopen(FTable, "r");
     int len;
     char buff[MAX_STR_LEN];
     while(fgets(buff, MAX_STR_LEN, pf) != NULL){
         len=strlen(buff);
         buff[len-1]='\0';  // 去除换行符
-        printf("%s\n", buff);
+        totalpage++;
     }
+    if(totalpage % MAX_PAGE_LINES){
+        totalpage /= MAX_PAGE_LINES;
+    }else{
+        totalpage /= MAX_PAGE_LINES;
+        totalpage--;
+    }
+    if(totalpage == -1) totalpage++; // 空表totalpage计算为-1，特殊处理为0
     fclose(pf);
+
+    // totalpage: 总页码数，从0开始计数，恒比真实的总页码数小1
+    // offset: 页码序号，从0开始计数，恒比真实的页码序号小1
+    // func: 选择的功能
+    int offset=0, func;
+    ShowFlightTableByPage(CMap, FTable, offset, totalpage);
+    do{
+        printf("请选择……\n");
+        printf("(1. 上一页  2. 下一页  3. 跳转到指定页码  4. 退出)\n");
+        scanf("%d", &func); getchar();
+        if(func == 4) break;
+        else if((func == 1 && offset == 0) || (func == 2 && offset == totalpage)){
+            InvalidInputs();
+            continue;
+        }else if(func == 1){
+            offset--;
+        }else if(func == 2){
+            offset++;
+        }else if(func == 3){
+            printf("请输入您要跳转到的页码: \n");
+            scanf("%d", &offset); getchar();
+            offset--;
+            if (!(offset >= 0 && offset <= totalpage)){
+                InvalidInputs();
+                continue;
+            }
+        }else if(!(func >= 1 && func <= 4)){
+            InvalidInputs();
+            continue;
+        }
+
+        ShowFlightTableByPage(CMap, FTable, offset, totalpage);
+
+    }while(1);
 }
 
-void ShowFlightTable(CityMap *CMap, char FTable[]){
+void ShowFlightTableByPage(CityMap *CMap, char FTable[], int offset, int totalpage){
     int i;
     for(i=0;i<79;i++) printf("=");
     printf("\n");
@@ -149,13 +258,26 @@ void ShowFlightTable(CityMap *CMap, char FTable[]){
     printf("\n");
 
     FILE *pf=fopen(FTable, "r");
-    int len;
+    int len, counter=0;
     char buff[MAX_STR_LEN];
     while(fgets(buff, MAX_STR_LEN, pf) != NULL){
         len=strlen(buff);
         buff[len-1]='\0';  // 去除换行符
-        printf("%s\n", buff);
+        if(counter >= (offset * MAX_PAGE_LINES) && counter < ((offset + 1) * MAX_PAGE_LINES)) 
+            printf("%s\n", buff);
+        counter++;
+        if(counter >= ((offset + 1) * MAX_PAGE_LINES)) break;
     }
+
+    for(i=0;i<79;i++) printf("=");
+    printf("\n");
+    for(i=0;i<31;i++) printf(" ");
+    printf("第 %d 页，共 %d 页", offset + 1, totalpage + 1);
+    for(i=0;i<31;i++) printf(" ");
+    printf("\n");
+    for(i=0;i<79;i++) printf("=");
+    printf("\n");
+
     fclose(pf);
 }
 
