@@ -58,8 +58,8 @@ CityMap *GetMap(char TTable[], char FTable[]){
     char eh1, em1, eh2, em2;
 
     while(fscanf(pf, "%s %s %s %c%c%c %c%c   %c%c%c %c%c   %d %s\n", 
-        &number, &departure, &terminal, &sh1, &sh2, &c1, &sm1, &sm2, &eh1, &eh2, &c2, &em1, &em2, 
-        &duration, &cost_str) != EOF){
+        number, departure, terminal, &sh1, &sh2, &c1, &sm1, &sm2, &eh1, &eh2, &c2, &em1, &em2, 
+        duration, cost_str) != EOF){
         cost=atof(cost_str);
         // fgetc(pf);
 
@@ -77,8 +77,8 @@ CityMap *GetMap(char TTable[], char FTable[]){
     pf = fopen(FTable, "r");
 
     while(fscanf(pf, "%s %s %s %c%c%c %c%c %c%c%c %c%c %d %s\n", 
-        &number, &departure, &terminal, &sh1, &sh2, &c1, &sm1, &sm2, &eh1, &eh2, &c2, &em1, &em2, 
-        &duration, &cost_str) != EOF){
+        number, departure, terminal, &sh1, &sh2, &c1, &sm1, &sm2, &eh1, &eh2, &c2, &em1, &em2, 
+        duration, cost_str) != EOF){
         cost=atof(cost_str);
         fgetc(pf);
 
@@ -122,7 +122,7 @@ void ShowTrainTable(CityMap *CMap, char TTable[]){
     while(fgets(buff, MAX_STR_LEN, pf) != NULL){
         len=strlen(buff);
         buff[len-1]='\0';  // 去除换行符
-        printf("%s\n", buff, len-1);
+        printf("%s\n", buff);
     }
     fclose(pf);
 }
@@ -154,7 +154,7 @@ void ShowFlightTable(CityMap *CMap, char FTable[]){
     while(fgets(buff, MAX_STR_LEN, pf) != NULL){
         len=strlen(buff);
         buff[len-1]='\0';  // 去除换行符
-        printf("%s\n", buff, len-1);
+        printf("%s\n", buff);
     }
     fclose(pf);
 }
