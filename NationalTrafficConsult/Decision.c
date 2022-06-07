@@ -4,10 +4,10 @@
 void Decision(CityMap *CMap){
     int transportation;
 
-    printf("请输入你想使用的交通工具(1:火车 2:飞机)\n");
+    printf("请输入你想使用的交通工具(0:火车 1:飞机)\n");
     while (1){
         scanf("%d",&transportation);
-        if(transportation==1 || transportation==2) break;
+        if(transportation==0 || transportation==1) break;
         printf("输入无效,请重新输入\n");
     }
     
@@ -55,6 +55,7 @@ int AddVex_To_S(CityMap* CMap,int* final,int* MinWeight){
     int min=INFINITY;
     int i,w;
     w=0;
+    int test=MinWeight[3];
     for(i=0;i<CMap->vexnum;i++){
         if(!final[i] && MinWeight[i]<min){
             min=MinWeight[i];
@@ -115,6 +116,8 @@ void Print_Route(CityMap* CMap,Elemtype* Route_Record,int ter_index,int dep_inde
     printf("\n");
     Elemtype* PrintLink;
     PrintLink=(Elemtype*)malloc(CMap->vexnum*sizeof(Elemtype));
+    Elemtype test;
+    test=Route_Record[ter_index];
     for(i=ter_index;i!=dep_index;i=Route_Record[i].dep){
         PrintLine(Route_Record[i].information,CMap->v[Route_Record[i].dep].city,CMap->v[Route_Record[i].ter].city,stdout);
     }
@@ -132,16 +135,18 @@ void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int tra
     int i;
     for(i=0;i<CMap->vexnum;i++){
         final[i]=0;
+        MinWeight[i]=INFINITY;
     }
     MinWeight[dep_index]=0;
     final[dep_index]=1;
     Elemtype min_route;
     NodeLink* visit;
-    int min=INFINITY;
+    int min;
     min_route.dep=dep_index;
     for(visit=CMap->v[dep_index].first;visit;visit=visit->next){
         min_route.ter=visit->vindex;
-        for(i=1;visit->info[i].tag!=-1;i++){
+        min=INFINITY;
+        for(i=0;visit->info[i].tag!=-1;i++){
             if(visit->info[i].tag==transportation && GetDurationTime(visit->info[i].start_time,visit->info[i].end_time)<min){
                 min=GetDurationTime(visit->info[i].start_time,visit->info[i].end_time);
                 min_route.information=visit->info[i];
