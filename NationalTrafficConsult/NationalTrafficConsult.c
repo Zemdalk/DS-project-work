@@ -3,6 +3,7 @@
 
 int main(){
     // 这里写个好看的欢迎界面，还要有作者信息
+    
     char TTable[MAX_STR_LEN] = "TrainTable.txt";
     char FTable[MAX_STR_LEN] = "FlightTable.txt";
 

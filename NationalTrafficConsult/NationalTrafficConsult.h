@@ -5,7 +5,7 @@
 
 #define MAX_STR_LEN 500     // 字符串最大长度
 #define MAX_VEX_NUM 100     // (城市交通)图中最大顶点数目
-#define MAX_INFO 20         // 最大航班及车次数量和
+#define MAX_INFO 100         // 最大航班及车次数量和
 
 // 时间的规整格式
 typedef struct Time{

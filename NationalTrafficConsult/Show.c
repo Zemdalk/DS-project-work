@@ -61,7 +61,7 @@ CityMap *GetMap(char TTable[], char FTable[]){
         &number, &departure, &terminal, &sh1, &sh2, &c1, &sm1, &sm2, &eh1, &eh2, &c2, &em1, &em2, 
         &duration, &cost_str) != EOF){
         cost=atof(cost_str);
-        fgetc(pf);
+        // fgetc(pf);
 
         start_time.hour = (sh1-'0')*10+(sh2-'0');
         start_time.minute = (sm1-'0')*10+(sm2-'0');
