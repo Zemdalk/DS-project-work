@@ -133,7 +133,7 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
             NodeLink *p=CMap->v[depvertex].first;
             while(p && p->vindex!=tervertex && p->next!=NULL)
                 p=p->next;
-            if(p==NULL || p->next==NULL){
+            if((p==NULL || p->next==NULL) && p->vindex!=tervertex){
                 //这两个地方原本没有边，需要新建线路(节点)
                 NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
                 q->vindex=tervertex;
@@ -466,7 +466,7 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
             NodeLink *p=CMap->v[depvertex].first;
             while(p && p->vindex!=tervertex && p->next!=NULL)
                 p=p->next;
-            if(p==NULL || p->next==NULL){
+            if((p==NULL || p->next==NULL) && p->vindex!=tervertex){
                 //这两个地方原本没有边，需要新建线路(节点)
                 NodeLink *q=(NodeLink *)malloc(sizeof(NodeLink));
                 q->vindex=tervertex;
