@@ -146,7 +146,7 @@ CityMap *AddTrain(CityMap *CMap, char departure[], char terminal[], Time start_t
                 q->info[0].duration=GetDurationTime(start_time,end_time);
                 if(p==NULL){
                     q->next=NULL;
-                    p=q;
+                    CMap->v[depvertex].first=q;
                 }
                 else{
                     q->next=p->next;
@@ -478,7 +478,7 @@ CityMap *AddFlight(CityMap *CMap, char departure[], char terminal[], Time start_
                 q->info[0].end_time=end_time;
                 q->info[0].duration=GetDurationTime(start_time,end_time);
                 if(p==NULL){
-                    q->next=NULL;
+                    CMap->v[depvertex].first=q;
                     p=q;
                 }
                 else{
