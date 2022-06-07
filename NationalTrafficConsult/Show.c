@@ -59,7 +59,7 @@ CityMap *GetMap(char TTable[], char FTable[]){
 
     while(fscanf(pf, "%s %s %s %c%c%c %c%c   %c%c%c %c%c   %d %s\n", 
         number, departure, terminal, &sh1, &sh2, &c1, &sm1, &sm2, &eh1, &eh2, &c2, &em1, &em2, 
-        duration, cost_str) != EOF){
+        &duration, cost_str) != EOF){
         cost=atof(cost_str);
         // fgetc(pf);
 
@@ -78,7 +78,7 @@ CityMap *GetMap(char TTable[], char FTable[]){
 
     while(fscanf(pf, "%s %s %s %c%c%c %c%c %c%c%c %c%c %d %s\n", 
         number, departure, terminal, &sh1, &sh2, &c1, &sm1, &sm2, &eh1, &eh2, &c2, &em1, &em2, 
-        duration, cost_str) != EOF){
+        &duration, cost_str) != EOF){
         cost=atof(cost_str);
         fgetc(pf);
 
