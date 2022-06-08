@@ -55,7 +55,6 @@ int AddVex_To_S(CityMap* CMap,int* final,int* MinWeight){
     int min=INFINITY;
     int i,w;
     w=0;
-    int test=MinWeight[3];
     for(i=0;i<CMap->vexnum;i++){
         if(!final[i] && MinWeight[i]<min){
             min=MinWeight[i];
@@ -116,10 +115,12 @@ void Print_Route(CityMap* CMap,Elemtype* Route_Record,int ter_index,int dep_inde
     printf("\n");
     Elemtype* PrintLink;
     PrintLink=(Elemtype*)malloc(CMap->vexnum*sizeof(Elemtype));
-    Elemtype test;
-    test=Route_Record[ter_index];
+    int length=0;
     for(i=ter_index;i!=dep_index;i=Route_Record[i].dep){
-        PrintLine(Route_Record[i].information,CMap->v[Route_Record[i].dep].city,CMap->v[Route_Record[i].ter].city,stdout);
+        PrintLink[length++]=Route_Record[i];
+    }
+    for(i=length-1;i>=0;i--){
+        PrintLine(PrintLink[i].information,CMap->v[PrintLink[i].dep].city,CMap->v[PrintLink[i].ter].city,stdout);
     }
 
 }
@@ -188,6 +189,7 @@ void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportat
     int i;
     for(i=0;i<CMap->vexnum;i++){
         final[i]=0;
+        MinWeight[i]=INFINITY;
     }
     MinWeight[dep_index]=0;
     final[dep_index]=1;
@@ -225,6 +227,7 @@ void LeastExchange(CityMap *CMap, char* departure, char* terminal, int transport
     int i;
     for(i=0;i<CMap->vexnum;i++){
         final[i]=0;
+        MinWeight[i]=INFINITY;
     }
     MinWeight[dep_index]=0;
     final[dep_index]=1;
