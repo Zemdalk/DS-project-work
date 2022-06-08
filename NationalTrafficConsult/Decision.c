@@ -16,6 +16,7 @@ void Decision(CityMap *CMap){
     scanf("%s",departure);
     printf("请输入你的终点\n");
     scanf("%s",terminal);
+    getchar();
 
     printf("下面给出推荐的路线\n");
     printf("乘坐时间最短的路线:\n");
