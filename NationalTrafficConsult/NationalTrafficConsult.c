@@ -33,7 +33,7 @@ int main(){
                 CMap = EditFlight(CMap);
                 break;
             case 5:
-                // Decision(CMap);
+                Decision(CMap);
                 break;
             default:
                 InvalidInputs();
