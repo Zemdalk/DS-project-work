@@ -100,6 +100,9 @@ CityMap *DelFlight(CityMap *CMap, char number[]);
 //输入无效跳出提示
 void InvalidInputs(void);
 
+//编号减一
+void strsub(char s[]);
+
 //删除火车时未找到
 void NotFoundT(void);
 

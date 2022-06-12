@@ -332,6 +332,7 @@ CityMap *DelTrain(CityMap *CMap, char number[]){
     while(p->info[num+1].tag!=-1){
         p->info[num].tag=p->info[num+1].tag;
         strcpy(p->info[num].number,p->info[num+1].number);
+        strsub(p->info[num].number);
         p->info[num].cost=p->info[num+1].cost;
         p->info[num].start_time.hour=p->info[num+1].start_time.hour;
         p->info[num].start_time.minute=p->info[num+1].start_time.minute;
@@ -613,6 +614,7 @@ CityMap *DelFlight(CityMap *CMap, char number[]){
     while(p->info[num+1].tag!=-1){
         p->info[num].tag=p->info[num+1].tag;
         strcpy(p->info[num].number,p->info[num+1].number);
+        strsub(p->info[num].number);
         p->info[num].cost=p->info[num+1].cost;
         p->info[num].start_time.hour=p->info[num+1].start_time.hour;
         p->info[num].start_time.minute=p->info[num+1].start_time.minute;
@@ -667,4 +669,16 @@ void numtostr(int num, char *str){
     }
     str[2]='\0';
     return;
+}
+
+void strsub(char s[]){
+    if(s[6]!='0'){
+        s[6]--;
+        return;
+    }
+    else{
+        s[6]='9';
+        s[5]--;
+        return;
+    }
 }
