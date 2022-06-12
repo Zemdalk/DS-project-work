@@ -38,12 +38,16 @@ int isOrderValid(int order[]);
 // 获取优先级
 void GetOrder(int order[]);
 
+// 初始化链表
 LinkedList *InitLinkedList(LinkedList *LL);
 
+// 向链表结尾添加结点
 LinkedList *AddLinkedList(LinkedList *LL, RcdType r);
 
+// 初始化顺序表
 SqList *InitSqList(SqList *SL);
 
+// 向顺序表结尾添加结点
 SqList *AddSqList(SqList *SL, RcdType r);
 
 // 打印顺序表中的排序结果
