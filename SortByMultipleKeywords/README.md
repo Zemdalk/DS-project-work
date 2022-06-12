@@ -23,7 +23,7 @@
 
 # 执行流程
 
-![Flowchart](Flowchart.png)
+<center><img src="Flowchart.png" alt="Flowchart" style="zoom: 37%;" /></center>
 
 # 代码文件
 

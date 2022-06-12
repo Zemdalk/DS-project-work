@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_RCD 10000       // 最大记录数
-#define NUM_RCD 100         // 记录数
-#define BOUNDARY 100        // 范围
+#define MAX_RCD 10000           // 最大记录数
+#define NUM_RCD 100             // 记录数
+#define BOUNDARY 100            // 每个数据的最大取值范围
 
 typedef struct RcdType{
-    int key[4];             // 4个关键字
-} RcdType;                  // 记录类型
+    int key[4];                 // 4个关键字
+} RcdType;                      // 记录类型
 
 typedef struct SqList{
-    RcdType rcd[MAX_RCD + 1]; // v[0]闲置，供内部排序算法使用 
-    int length;             // 记录数
-} SqList;                   // LSD-稳定的内部排序；MSD
+    RcdType rcd[MAX_RCD + 1];   // v[0]闲置，供内部排序算法使用 
+    int length;                 // 记录数
+} SqList;                       // LSD-稳定的内部排序；MSD
 
 typedef struct LinkedList{
     RcdType rcd;
@@ -55,3 +55,15 @@ void PrintSqList(SqList *SL);
 
 // 打印链表中的排序结果
 void PrintLinkedList(LinkedList *LL);
+
+// compare: 存放比较次数
+// move: 存放移动次数
+
+unsigned long LSDStable_compare;
+unsigned long LSDStable_move;
+
+unsigned long LSDDistr_compare;
+unsigned long LSDDistr_move;
+
+unsigned long MSD_compare;
+unsigned long MSD_move;
