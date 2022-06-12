@@ -1,5 +1,6 @@
 #include "NationalTrafficConsult.h"
 #define INFINITY 100000
+#define MAX 100
 
 void Decision(CityMap *CMap){
     int transportation;
@@ -123,12 +124,85 @@ void Print_Route(CityMap* CMap,Elemtype* Route_Record,int ter_index,int dep_inde
     for(i=length-1;i>=0;i--){
         PrintLine(PrintLink[i].information,CMap->v[PrintLink[i].dep].city,CMap->v[PrintLink[i].ter].city,stdout);
     }
+    printf("\n");
 
+}
+
+int Dijkstra(int dep_index,int ter_index,int*MinWeight_ptr[],int* final_ptr[],Elemtype* RouteRecord_ptr[],int length,CityMap* CMap,int transportation){
+    int least_time=0;
+    Elemtype min_route;
+    int w=dep_index;
+    NodeLink* visit;
+    int i;
+    while(!IsEnding(final_ptr[length],CMap,ter_index)){
+        min_route.dep=w;
+        for(visit=CMap->v[w].first;visit;visit=visit->next){
+            if(!final_ptr[length][visit->vindex]){
+                for(i=0;visit->info[i].tag!=-1;i++){
+                    if(visit->info[i].tag==transportation && MinWeight_ptr[length][visit->vindex]>(MinWeight_ptr[length][w]+visit->info[i].duration+GetDurationTime(RouteRecord_ptr[length][w].information.end_time,visit->info[i].start_time))){
+                        MinWeight_ptr[length][visit->vindex]=MinWeight_ptr[length][w]+visit->info[i].duration+GetDurationTime(RouteRecord_ptr[length][w].information.end_time,visit->info[i].start_time);
+                        min_route.ter=visit->vindex;
+                        min_route.information=visit->info[i];
+                        RouteRecord_ptr[length][visit->vindex]=min_route;                    
+                    }   
+                }
+            }
+        }
+        w=AddVex_To_S(CMap,final_ptr[length],MinWeight_ptr[length]);
+        least_time=MinWeight_ptr[length][w];
+    }
+    return least_time;
 }
 
 //最短时间决策
 void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int transportation){
-    MinWeight=(int*)malloc(CMap->vexnum*sizeof(int));
+    int* MinWeight_ptr[MAX];
+    int* final_ptr[MAX];
+    Elemtype* RouteRecord_ptr[MAX];
+    int mintime[MAX];
+    int length=0;
+    int dep_index,ter_index;
+    dep_index=FoundIndex(CMap,departure);
+    ter_index=FoundIndex(CMap,terminal);
+    NodeLink* visit;
+    Elemtype min_route;
+    int i;
+    for(visit=CMap->v[dep_index].first;visit;visit=visit->next){
+        min_route.dep=dep_index;
+        min_route.ter=visit->vindex;
+        for(i=0;visit->info[i].tag!=-1;i++){
+            if(visit->info[i].tag==transportation){
+                min_route.information=visit->info[i];
+                MinWeight_ptr[length]=(int*)malloc(CMap->vexnum*sizeof(int));
+                final_ptr[length]=(int*)malloc(CMap->vexnum*sizeof(int));
+                RouteRecord_ptr[length]=(Elemtype*)malloc(CMap->vexnum*sizeof(Elemtype));
+                int j;
+                for(j=0;j<CMap->vexnum;j++){
+                    final_ptr[length][j]=0;
+                    MinWeight_ptr[length][j]=INFINITY;
+                }
+                MinWeight_ptr[length][dep_index]=0;
+                MinWeight_ptr[length][visit->vindex]=visit->info[i].duration;
+                final_ptr[length][dep_index]=1;
+                final_ptr[length][visit->vindex]=1;
+                RouteRecord_ptr[length][visit->vindex]=min_route;
+                mintime[length]=Dijkstra(visit->vindex,ter_index,MinWeight_ptr,final_ptr,RouteRecord_ptr,length,CMap,transportation);
+                length++;
+            }
+        }
+    }
+    int min=INFINITY;
+    int m;
+    for(i=0;i<length;i++){
+        if(mintime[i]<min){
+            min=mintime[i];
+            m=i;
+        }
+    }
+    Print_Route(CMap,RouteRecord_ptr[m],ter_index,dep_index);
+    return;
+
+    /*MinWeight=(int*)malloc(CMap->vexnum*sizeof(int));
     final=(int*)malloc(CMap->vexnum*sizeof(int));
     RouteRecord=(Elemtype*)malloc(CMap->vexnum*sizeof(Elemtype));
     int dep_index,ter_index;
@@ -175,7 +249,7 @@ void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int tra
         w=AddVex_To_S(CMap,final,MinWeight);
     }
     Print_Route(CMap,RouteRecord,ter_index,dep_index);
-    return;
+    return;*/
 }
 
 //最低价格决策
