@@ -16,14 +16,14 @@ LinkedList *LSDDistr(LinkedList *LL, int order[]){
 }
 
 LinkedList *Distribute(LinkedList *LL, LinkedList *subLL, int i){
-    LinkedList *p=LL->next;     // å¾…åˆ†é…
+    LinkedList *p=LL->next;     // ´ý·ÖÅä
     int curKey;
     while(p){
         curKey = p->rcd.key[i];
         LinkedList *q=&subLL[curKey];
-        while(q->next) q=q->next;   // æ‰¾åˆ°æ’å…¥ä½ç½®
+        while(q->next) q=q->next;   // ÕÒµ½²åÈëÎ»ÖÃ
         LL->next=p->next;
-        p->next=NULL;               // ä»ŽLLä¸­æ‘˜å‡ºp
+        p->next=NULL;               // ´ÓLLÖÐÕª³öp
         q->next=p;
         p=LL->next;
     }
