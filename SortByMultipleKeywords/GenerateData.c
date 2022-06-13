@@ -31,7 +31,7 @@ void PrintLinkedList(LinkedList *LL){
     RcdType r;
     while(p!=NULL){
         r=p->rcd;
-        for(i=0;i<4;i++){
+        for(i=0;i<NUM_KEY;i++){
             printf("%d\t", r.key[i]);
         }
         p=p->next;
@@ -45,7 +45,7 @@ void PrintSqList(SqList *SL){
     RcdType r;
     for(i=1; i <= SL->length ; i++){
         r=SL->rcd[i];
-        for(j=0; j<4; j++){
+        for(j=0; j<NUM_KEY; j++){
             printf("%d\t", r.key[j]);
         }
         printf("\n");

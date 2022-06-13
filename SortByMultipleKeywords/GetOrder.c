@@ -9,13 +9,13 @@ void GetOrder(int order[]){
     do{
         char c;
         int i;
-        for(i=0;i<4;i++){
+        for(i=0;i<NUM_KEY;i++){
             scanf("%d", order+i);
             order[i]--;
 
             // is input format valid?
             c=getchar();
-            if( !((c==' ' && i!=3) || (c=='\n' && i==3))){
+            if( !((c==' ' && i!=(NUM_KEY-1)) || (c=='\n' && i==(NUM_KEY-1)))){
                 InvalidInput();
                 flag=1;
                 while(c!='\n' && getchar()!='\n') ;
@@ -41,7 +41,7 @@ void InvalidInput(){
 
 int isOrderValid(int order[]){
     int i, j;
-    for(i=0;i<4;i++){
+    for(i=0;i<NUM_KEY;i++){
         if(order[i]<0 || order[i]>3){
             return 0;
         }

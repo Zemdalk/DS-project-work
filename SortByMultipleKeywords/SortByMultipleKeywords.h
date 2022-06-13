@@ -5,9 +5,10 @@
 #define MAX_RCD 10000           // 最大记录数
 #define NUM_RCD 100             // 记录数
 #define BOUNDARY 100            // 每个数据的最大取值范围
+#define NUM_KEY 4               // 关键字个数
 
 typedef struct RcdType{
-    int key[4];                 // 4个关键字
+    int key[NUM_KEY];           // 4个关键字
 } RcdType;                      // 记录类型
 
 typedef struct SqList{

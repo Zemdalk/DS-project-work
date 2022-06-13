@@ -6,7 +6,7 @@ int main(){
 
     // 习题要求是，关键字排序应当由用户指定优先级关系，因此我设立了order数组
     // order数组中按照优先级从大到小存储0，1，2，3四个关键字
-    int order[4];
+    int order[NUM_KEY];
     GetOrder(order);
 
     // 由随机数生成测试数据
@@ -18,7 +18,7 @@ int main(){
     LL = InitLinkedList(LL);
     SL = InitSqList(SL);
     for(i=0;i<NUM_RCD;i++){
-        for(j=0; j<4; j++){
+        for(j=0; j<NUM_KEY; j++){
             r.key[j]=rand() % (BOUNDARY + 1);
         }
         LL = AddLinkedList(LL, r);
