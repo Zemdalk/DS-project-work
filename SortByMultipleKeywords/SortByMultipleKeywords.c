@@ -24,10 +24,12 @@ int main(){
         LL = AddLinkedList(LL, r);
         SL = AddSqList(SL, r);
     }
+    printf("原始数据：\n");
+    PrintSqList(SL);
 
     // 进入算法
     SqList *SL1=SL, *SL2=SL;
-    // SL1 = LSDStable(SL1, order);
+    SL= LSDStable(SL1, order);
     // SL2 = MSD(SL2, order);
     // LL  = LSDDistr(LL, order);
 
