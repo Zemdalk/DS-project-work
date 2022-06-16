@@ -93,9 +93,7 @@ int FoundIndex(CityMap *CMap, char departure[]){
 
 //打印最短路径
 void Print_Route(CityMap* CMap,Elemtype* Route_Record,int ter_index,int dep_index){
-    //需要调一下其他的函数。
-    //可能需要用到栈
-    //先把表头打印出来
+    //打印表头
     int i;
     for(i=0;i<79;i++) printf("=");
     printf("\n");
@@ -128,6 +126,9 @@ void Print_Route(CityMap* CMap,Elemtype* Route_Record,int ter_index,int dep_inde
 
 }
 
+//求最少时间的算法核心思想是：将起点发出的每一条线路的终点作为源点，对每个源点使用Dijkstra算法，最后在所有最小路径中选择时间花费最少的。
+
+//Dijkstra核心算法，在求最少时间的函数中需要被调用。
 int Dijkstra(int dep_index,int ter_index,int*MinWeight_ptr[],int* final_ptr[],Elemtype* RouteRecord_ptr[],int length,CityMap* CMap,int transportation){
     int least_time=0;
     Elemtype min_route;
@@ -202,57 +203,9 @@ void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int tra
     Print_Route(CMap,RouteRecord_ptr[m],ter_index,dep_index);
     return;
 
-    /*MinWeight=(int*)malloc(CMap->vexnum*sizeof(int));
-    final=(int*)malloc(CMap->vexnum*sizeof(int));
-    RouteRecord=(Elemtype*)malloc(CMap->vexnum*sizeof(Elemtype));
-    int dep_index,ter_index;
-    dep_index=FoundIndex(CMap,departure);
-    ter_index=FoundIndex(CMap,terminal);
-    int i;
-    for(i=0;i<CMap->vexnum;i++){
-        final[i]=0;
-        MinWeight[i]=INFINITY;
-    }
-    MinWeight[dep_index]=0;
-    final[dep_index]=1;
-    Elemtype min_route;
-    NodeLink* visit;
-    int min;
-    min_route.dep=dep_index;
-    for(visit=CMap->v[dep_index].first;visit;visit=visit->next){
-        min_route.ter=visit->vindex;
-        min=INFINITY;
-        for(i=0;visit->info[i].tag!=-1;i++){
-            if(visit->info[i].tag==transportation && GetDurationTime(visit->info[i].start_time,visit->info[i].end_time)<min){
-                min=GetDurationTime(visit->info[i].start_time,visit->info[i].end_time);
-                min_route.information=visit->info[i];
-            }
-        }
-        MinWeight[visit->vindex]=min;
-        RouteRecord[visit->vindex]=min_route;
-    }
-    int w=AddVex_To_S(CMap,final,MinWeight); 
-    while(!IsEnding(final,CMap,ter_index)){
-        min_route.dep=w;
-        for(visit=CMap->v[w].first;visit;visit=visit->next){
-            if(!final[visit->vindex]){
-                for(i=0;visit->info[i].tag!=-1;i++){
-                    if(visit->info[i].tag==transportation && MinWeight[visit->vindex]>(MinWeight[w]+GetDurationTime(visit->info[i].start_time,visit->info[i].end_time)+GetDurationTime(RouteRecord[w].information.end_time,visit->info[i].start_time))){
-                        MinWeight[visit->vindex]=MinWeight[w]+GetDurationTime(visit->info[i].start_time,visit->info[i].end_time)+GetDurationTime(RouteRecord[w].information.end_time,visit->info[i].start_time);
-                        min_route.ter=visit->vindex;
-                        min_route.information=visit->info[i];
-                        RouteRecord[visit->vindex]=min_route;                    
-                    }   
-                }
-            }
-        }
-        w=AddVex_To_S(CMap,final,MinWeight);
-    }
-    Print_Route(CMap,RouteRecord,ter_index,dep_index);
-    return;*/
-}
 
 //最低价格决策
+//采用Dijkstra算法，权值为价格
 void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportation){
     double* MinWeight;
     MinWeight=(double*)malloc(CMap->vexnum*sizeof(double));
@@ -292,6 +245,7 @@ void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportat
 }
 
 //最少中转次数决策
+//采用Dijkstra算法，每条边的权值为1，表示中转了1次。
 void LeastExchange(CityMap *CMap, char* departure, char* terminal, int transportation){
     MinWeight=(int*)malloc(CMap->vexnum*sizeof(int));
     final=(int*)malloc(CMap->vexnum*sizeof(int));
@@ -329,154 +283,10 @@ void LeastExchange(CityMap *CMap, char* departure, char* terminal, int transport
     return;
 }
 
-
-
-
-
-
-
-
-/*--------------------------------------------下面是求最小中转次数的结构定义以及函数--------------------------------------
-typedef int Status;
-typedef struct route{
-    int dep,ter;
-    Info information;
-}Elemtype;
-
-typedef struct QueueNode{
-    Elemtype route;
-    struct QueueNode* pior;
-    struct QueueNode* next;
-}QNode,*PTR_To_QNode;
-
-typedef struct LinkedQueue{
-    PTR_To_QNode front;
-    PTR_To_QNode rear;
-}LinkedQueue, *PTR_To_LQ;
-
-typedef struct sqtack{
-    int top;
-    ElemType *base;
-}SqStack, *PTR_To_SqStack;
-
-Status Init_LQ(PTR_To_LQ s){
-    if(!s) return ERROR;
-    s->front=(PTR_To_QNode)malloc(sizeof(QNode));
-    s->rear=s->front;
-    return OK;
-}
-
-int IsEmpty_LQ(PTR_To_LQ s){
-    if(s->front==s->rear) return 1;
-    else return 0;
-}
-
-Status EnQueue(PTR_To_LQ s,Elemtype r,PTR_To_QNode p){
-    if(!s) return ERROR;
-    PTR_To_QNode new;
-    new=(PTR_To_QNode)malloc(sizeof(QNode));
-    new->next=NULL;
-    new->route=r;
-    new->pior=p;
-    s->rear->next=new;
-    s->rear=new;
-    return OK;
-}
-
-Status GetHead(PTR_To_LQ s, PTR_To_QNode p){
-    if(IsEmpty_LQ(s)) return ERROR;
-    *p=*(s->front->next);
-    s->front->next=s->front->next->next;
-    if(!s->front->next) s->rear=s->front;
-    return OK;
-}
-
-Status Init_SqStack(PTR_To_SqStack s){
-    s->base=(ElemType*)malloc(MAXSIZE*sizeof(ElemType));
-    if(!s->base) return ERROR;
-    s->top=0;
-    return OK;
-}
-
-Status Push(PTR_To_SqStack s, ElemType r){
-    if(!s) return ERROR;
-    s->base[s->top++]=r;
-    return OK;
-}
-
-Status Pop(PTR_To_SqStack s, ElemType* e){
-    if(!s) return ERROR;
-    s->top--;
-    *e=s->base[s->top];
-    if(s->top<0) return ERROR;
-    return OK;
-}
-void Print_Route(PTR_To_QNode p){
-    PTR_To_SqStack s;
-    s=(PTR_To_SqStack)malloc(sizeof(SqStack));
-    Init_SqStack(s);
-    PTR_To_QNode visit;
-    for(visit=p;visit;visit=visit->pior){
-        Push(s,visit->route);
-    }
-    //这里加一个打印表头的函数
-    Elemtype *e;
-    e=(Elemtype *)malloc(sizeof(Elemtype));
-    while(s->top){
-        Pop(s,e);
-        //这里加一个打印路线的函数。
-    }
-}
-
-void LeastExchange(CityMap *CMap, char* departure, char* terminal, int transportation){
-    int dep_index,ter_index;
-    //用一个什么函数把这两个变量赋为相应的表里面的值。
-    int* Mark;
-    Mark=(int*)malloc(CMap->vexnum*sizeof(int));
-    int i;
-    for(i=0;i<vexnum;i++){
-        Mark[i]=0;
-    }
-    Elemtype r;
-    PTR_To_QNode p=NULL;
-    PTR_To_LQ s;
-    s=(PTR_To_LQ)malloc(sizeof(LinkedQueue));
-    Init_LQ(s);
-    NodeLink* visit;
-    Mark[dep_index]=1;
-    for(visit=CMap->v[dep_index].first;visit;visit=visit->next){
-        r.dep=dep_index;
-        r.ter=visit.vindex;
-        Mark[r.ter]=1;
-        for(i=0;visit->info[i].tag!=-1;i++){
-            if(visit->info[i].tag==transportation){
-                r.information=visit->info[i]; 
-                EnQueue(s,r,p);
-            }
-        }
-    }
-    while(!IsEmpty_LQ(s)){
-            p=(PTR_To_QNode)malloc(sizeof(QNode));
-            GetHead(s,p);
-            if(p->route.ter==ter_index){
-                Print_Route(p);
-                return;
-            }else{
-                r.dep=p->route.ter;
-                for(visit=CMap->v[r.dep].first;visit;visit=visit->next){
-                    if(!Mark[visit->vindex]){
-                        r.ter=visit->vindex;
-                        Mark[r.ter]=1;
-                        for(i=0;visit->info[i].tag!=-1;i++){
-                            if(visit->info[i].tag==transportation){
-                                r.information=visit->info[i];
-                                EnQueue(s,r,p);
-                            }
-                        }
-                    }
-                }
-            }
-    }
-}
+/*---------------------------------最后一点想法----------------------------*/
+/*
+这次代码基本实现了题目的要求，对于不同的情况能给出正确的解，并且也是本人根据本学期所学内容能给出的最好的解法。
+但是这次的项目还是不能完全地模拟实际情况，比如如何兼顾时间、花费、中转路次数，以及如何同时考虑飞机与火车的使用等问题都没有解决。。。。。
+最后感谢同组同学的帮助。
+                                                                                2022.6.16
 */
-
