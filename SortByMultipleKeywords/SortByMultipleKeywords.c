@@ -22,22 +22,24 @@ int main(){
             r.key[j]=rand() % (BOUNDARY + 1);
         }
         LL = AddLinkedList(LL, r);
-        SL = AddSqList(SL, r);
+        SL = AddSqList(SL, r, i);
     }
     printf("原始数据：\n");
     PrintSqList(SL);
 
     // 进入算法
     SqList *SL1=SL, *SL2=SL;
-    SL= LSDStable(SL1, order);
-    // SL2 = MSD(SL2, order);
-    // LL  = LSDDistr(LL, order);
+    //SL= LSDStable(SL1, order);
+    SL2 = MSD(SL2, order);
+    LL  = LSDDistr(LL, order);
 
     // 把其中一个计算结果打印出来即可
-    printf("排序结果：\n");
-    // PrintLinkedList(LL);
-    PrintSqList(SL);
-    // PrintSqList(SL2);
+    printf("排序结果1：\n");
+    PrintLinkedList(LL);
+    //printf("排序结果2：\n");
+    //PrintSqList(SL);
+    printf("排序结果3：\n");
+    PrintSqList(SL2);
 
     system("pause");
 }

@@ -1,53 +1,58 @@
 #include "SortByMultipleKeywords.h"
 
-typedef struct ElemType{
+/*typedef struct ElemType{
     RcdType data;
     int ord;
-}ElemType,*PTR_To_ElemType;
+}ElemType,*PTR_To_ElemType;*/ 
 //为了减小算法的时间复杂度，选用了快排，但是由于快排并不稳定，于是在数据域外额外增加了一个域，指示该数据在输入中的顺序，从而达到稳定性。
 
-int Partition(PTR_To_ElemType Elem_ptr,int low,int high,int key_num){
-    Elem_ptr[0]=Elem_ptr[low];
-    int pivotkey=Elem_ptr[low].data.key[key_num];
-    int pivotord=Elem_ptr[low].ord;
+int Partition(SqList *SL,int low,int high,int key_num){
+    SL->rcd[0]=SL->rcd[low];
+    int pivotkey=SL->rcd[low].data.key[key_num];
+    int pivotord=SL->rcd[low].ord;
     while(low<high){
-        while(low<high && (Elem_ptr[high].data.key[key_num]>pivotkey || (Elem_ptr[high].data.key[key_num]==pivotkey && Elem_ptr[high].ord>=pivotord)))
+        while(low<high && (SL->rcd[high].data.key[key_num]>pivotkey || (SL->rcd[high].data.key[key_num]==pivotkey && SL->rcd[high].ord>=pivotord)))
         --high;
-        Elem_ptr[low]=Elem_ptr[high];
-        while(low<high && (Elem_ptr[low].data.key[key_num]<pivotkey || (Elem_ptr[low].data.key[key_num]==pivotkey && Elem_ptr[low].ord<=pivotord)))
+        SL->rcd[low]=SL->rcd[high];
+        while(low<high && (SL->rcd[low].data.key[key_num]<pivotkey || (SL->rcd[low].data.key[key_num]==pivotkey && SL->rcd[low].ord<=pivotord)))
         ++low;
-        Elem_ptr[high]=Elem_ptr[low];
+        SL->rcd[high]=SL->rcd[low];
     }
-    Elem_ptr[low]=Elem_ptr[0];
+    SL->rcd[low]=SL->rcd[0];
     return low;
 }
 
-void Qsort(PTR_To_ElemType Elem_ptr,int low, int high,int key_num){
+void Qsort(SqList *SL,int low, int high,int key_num){
     if(low<high){
-        int pivotloc=Partition(Elem_ptr,low,high,key_num);
-        Qsort(Elem_ptr,low,pivotloc-1,key_num);
-        Qsort(Elem_ptr,pivotloc+1,high,key_num);
+        int pivotloc=Partition(SL,low,high,key_num);
+        Qsort(SL,low,pivotloc-1,key_num);
+        Qsort(SL,pivotloc+1,high,key_num);
     }
 }
 
 SqList *LSDStable(SqList *SL, int order[]){
-    PTR_To_ElemType Elem_ptr;
-    Elem_ptr=(PTR_To_ElemType)malloc((SL->length+1)*sizeof(ElemType));
+    /*PTR_To_RcdSqType SL;
+    SL=(PTR_To_ElemType)malloc((SL->length+1)*sizeof(ElemType));
     int i;
     for(i=1;i<=SL->length;i++){
-        Elem_ptr[i].data=SL->rcd[i];
-        Elem_ptr[i].ord=i;
-    }
-    int key_num,j;
+        SL[i].data=SL->rcd[i];
+        SL[i].ord=i;
+    }*/
+    int key_num,i,j;
     for(i=3;i>=0;i--){
         key_num=order[i];
-        Qsort(Elem_ptr,1,SL->length,key_num);
+        Qsort(SL,1,SL->length,key_num);
         for(j=1;j<=SL->length;j++){
-           Elem_ptr[j].ord=j;
+           SL->rcd[j].ord=j;
         }
+        printf("----------------------\n");
+        PrintSqList(SL);
     }
-    for(i=1;i<=SL->length;i++){
-        SL->rcd[i]=Elem_ptr[SL->length+1-i].data;
+    RcdSqType temp;
+    for(i=1,j=SL->length;i<j;i++,j--){
+        temp=SL->rcd[i];
+        SL->rcd[i]=SL->rcd[j];
+        SL->rcd[j]=temp;
     }
     return SL;
 }

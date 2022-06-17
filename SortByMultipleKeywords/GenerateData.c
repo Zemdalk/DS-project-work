@@ -20,8 +20,9 @@ SqList *InitSqList(SqList *SL){
     return SL;
 }
 
-SqList *AddSqList(SqList *SL, RcdType r){
-    SL->rcd[++SL->length]=r;
+SqList *AddSqList(SqList *SL, RcdType r, int i){
+    SL->rcd[++SL->length].data=r;
+    SL->rcd[SL->length].ord=i;
     return SL;
 }
 
@@ -44,7 +45,7 @@ void PrintSqList(SqList *SL){
     int i, j;
     RcdType r;
     for(i=1; i <= SL->length ; i++){
-        r=SL->rcd[i];
+        r=SL->rcd[i].data;
         for(j=0; j<NUM_KEY; j++){
             printf("%d\t", r.key[j]);
         }
