@@ -45,7 +45,6 @@ SqList *LSDStable(SqList *SL, int order[]){
         for(j=1;j<=SL->length;j++){
            SL->rcd[j].ord=j;
         }
-        printf("----------------------\n");
         PrintSqList(SL);
     }
     RcdSqType temp;

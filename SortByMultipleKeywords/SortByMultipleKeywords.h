@@ -2,77 +2,77 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_RCD 10000           // ×î´ó¼ÇÂ¼Êý
-#define NUM_RCD 100             // ¼ÇÂ¼Êý
-#define BOUNDARY 100            // Ã¿¸öÊý¾ÝµÄ×î´óÈ¡Öµ·¶Î§
-#define NUM_KEY 4               // ¹Ø¼ü×Ö¸öÊý
+#define MAX_RCD 10000           // ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
+#define NUM_RCD 100             // ï¿½ï¿½Â¼ï¿½ï¿½
+#define BOUNDARY 100            // Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½È¡Öµï¿½ï¿½Î§
+#define NUM_KEY 4               // ï¿½Ø¼ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½
 
 typedef struct RcdType{
-    int key[NUM_KEY];           // 4¸ö¹Ø¼ü×Ö
-} RcdType;                      // ¼ÇÂ¼ÀàÐÍ
+    int key[NUM_KEY];           // 4ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½
+} RcdType;                      // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
 
 typedef struct RcdSqType{
-    RcdType data;           // 4¸ö¹Ø¼ü×Ö
-    int ord;                    // Ë³ÐòÊý£¬±£Ö¤ÎÈ¶¨
+    RcdType data;           // 4ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½
+    int ord;                    // Ë³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½È¶ï¿½
 }RcdSqType;
 
 typedef struct SqList{
-    RcdSqType rcd[MAX_RCD + 1];   // v[0]ÏÐÖÃ£¬¹©ÄÚ²¿ÅÅÐòËã·¨Ê¹ÓÃ 
-    int length;                 // ¼ÇÂ¼Êý
-} SqList;                       // LSD-ÎÈ¶¨µÄÄÚ²¿ÅÅÐò£»MSD
+    RcdSqType rcd[MAX_RCD + 1];   // v[0]ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨Ê¹ï¿½ï¿½ 
+    int length;                 // ï¿½ï¿½Â¼ï¿½ï¿½
+} SqList;                       // LSD-ï¿½È¶ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½MSD
 
 typedef struct LinkedList{
     RcdType rcd;
     struct LinkedList *next;
-} LinkedList;               // LSD-¡°·ÖÅä¡±ºÍ¡°ÊÕ¼¯¡±·½·¨
+} LinkedList;               // LSD-ï¿½ï¿½ï¿½ï¿½ï¿½ä¡±ï¿½Í¡ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-// LSD£¬¸÷¹Ø¼ü×Ö²ÉÓÃÎÈ¶¨µÄÄÚ²¿ÅÅÐò·½·¨
+// LSDï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½È¶ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ò·½·ï¿½
 SqList *LSDStable(SqList *SL, int order[]);
 
-// LSD£¬¸÷¹Ø¼ü×Ö²ÉÓÃ¡°·ÖÅä¡±ºÍ¡°ÊÕ¼¯¡±µÄ·½·¨
+// LSDï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½Ö²ï¿½ï¿½Ã¡ï¿½ï¿½ï¿½ï¿½ä¡±ï¿½Í¡ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 LinkedList *LSDDistr(LinkedList *LL, int order[]); // distribute & collect
 
-// MSD·¨
+// MSDï¿½ï¿½
 SqList *MSD(SqList *SL, int order[]);
 
-// ÊäÈëÎÞÐ§ÌáÊ¾Óï¾ä
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½
 void InvalidInput();
 
-// ÅÐ¶ÏÓÅÏÈ¼¶ÊÇ·ñÕýÈ·
+// ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½È·
 int isOrderValid(int order[]);
 
-// »ñÈ¡ÓÅÏÈ¼¶
+// ï¿½ï¿½È¡ï¿½ï¿½ï¿½È¼ï¿½
 void GetOrder(int order[]);
 
-// ³õÊ¼»¯Á´±í
+// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 LinkedList *InitLinkedList(LinkedList *LL);
 
-// ÏòÁ´±í½áÎ²Ìí¼Ó½áµã
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½Ó½ï¿½ï¿½
 LinkedList *AddLinkedList(LinkedList *LL, RcdType r);
 
-// ³õÊ¼»¯Ë³Ðò±í
+// ï¿½ï¿½Ê¼ï¿½ï¿½Ë³ï¿½ï¿½ï¿½
 SqList *InitSqList(SqList *SL);
 
-// ÏòË³Ðò±í½áÎ²Ìí¼Ó½áµã
+// ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½Ó½ï¿½ï¿½
 SqList *AddSqList(SqList *SL, RcdType r, int i);
 
-// ´òÓ¡Ë³Ðò±íÖÐµÄÅÅÐò½á¹û
+// ï¿½ï¿½Ó¡Ë³ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void PrintSqList(SqList *SL);
 
-// ´òÓ¡Á´±íÖÐµÄÅÅÐò½á¹û
+// ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void PrintLinkedList(LinkedList *LL);
 
-// compare: ´æ·Å±È½Ï´ÎÊý
-// move: ´æ·ÅÒÆ¶¯´ÎÊý
+// compare: ï¿½ï¿½Å±È½Ï´ï¿½ï¿½ï¿½
+// move: ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
 
-unsigned long LSDStable_compare;
+/*unsigned long LSDStable_compare;
 unsigned long LSDStable_move;
 
 unsigned long LSDDistr_compare;
 unsigned long LSDDistr_move;
 
 unsigned long MSD_compare;
-unsigned long MSD_move;
+unsigned long MSD_move;*/
 
 void Qsort(SqList *SL,int low, int high,int key_num);
 
