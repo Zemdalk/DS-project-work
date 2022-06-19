@@ -64,8 +64,13 @@ int AddVex_To_S(CityMap* CMap,int* final,int* MinWeight){
             w=i;
         }
     }
-    final[w]=1;
-    return w;
+    if(min<INFINITY){
+        final[w]=1;
+        return w;
+    }else{
+        return -1;//增加了一个判定方式，可以判定此时已经没有可加入的集合S的点。
+    }
+    
 }
 
 int AddVex_To_S_double(CityMap* CMap,int* final,double* MinWeight){
@@ -78,8 +83,12 @@ int AddVex_To_S_double(CityMap* CMap,int* final,double* MinWeight){
             w=i;
         }
     }
-    final[w]=1;
-    return w;
+    if(min<INFINITY){
+        final[w]=1;
+        return w;
+    }else{
+        return -1;//增加了一个判定方式，可以判定此时已经没有可加入的集合S的点。
+    }
 }
 
 //找到城市对应的数字编号
@@ -87,6 +96,7 @@ int FoundIndex(CityMap *CMap, char departure[]){
     //通过城市名的字符串，在邻接表中找到城市对应的整数编号，并返回。
     int i;
     for(i=0;i<CMap->vexnum && strcmp(departure,CMap->v[i].city)!=0;i++);
+    if(i>=CMap->vexnum) return -1;//此时输入的城市不存在。
     return i;
 }
 
@@ -136,7 +146,7 @@ int Dijkstra(int dep_index,int ter_index,int*MinWeight_ptr[],int* final_ptr[],El
     int w=dep_index;
     NodeLink* visit;
     int i;
-    while(!IsEnding(final_ptr[length],CMap,ter_index)){
+    while(!IsEnding(final_ptr[length],CMap,ter_index) && w!=-1){
         min_route.dep=w;
         for(visit=CMap->v[w].first;visit;visit=visit->next){
             if(!final_ptr[length][visit->vindex]){
@@ -153,7 +163,8 @@ int Dijkstra(int dep_index,int ter_index,int*MinWeight_ptr[],int* final_ptr[],El
         w=AddVex_To_S(CMap,final_ptr[length],MinWeight_ptr[length]);
         least_time=MinWeight_ptr[length][w];
     }
-    return least_time;
+    if(w==-1) return INFINITY;//w==-1时，说明，以这个点为源点的情况行不通，走不到终点去。
+    else return least_time;
 }
 
 //最短时间决策
@@ -166,6 +177,10 @@ void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int tra
     int dep_index,ter_index;
     dep_index=FoundIndex(CMap,departure);
     ter_index=FoundIndex(CMap,terminal);
+    if(dep_index==-1 || ter_index==-1){
+        printf("你输入的城市不存在\n");
+        return;
+    }
     NodeLink* visit;
     Elemtype min_route;
     int i;
@@ -201,6 +216,10 @@ void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int tra
             m=i;
         }
     }
+    if(min==INFINITY){
+        printf("无路可通，有待开发（手动狗头）\n");
+        return;
+    }
     Print_Route(CMap,RouteRecord_ptr[m],ter_index,dep_index);
     return;
 }
@@ -215,6 +234,10 @@ void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportat
     int dep_index,ter_index;
     dep_index=FoundIndex(CMap,departure);
     ter_index=FoundIndex(CMap,terminal);
+    if(dep_index==-1 || ter_index==-1){
+        printf("你输入的城市不存在\n");
+        return;
+    }
     int i;
     for(i=0;i<CMap->vexnum;i++){
         final[i]=0;
@@ -225,7 +248,7 @@ void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportat
     Elemtype min_route;
     NodeLink* visit;
     int w=dep_index;
-    while(!IsEnding(final,CMap,ter_index)){
+    while(!IsEnding(final,CMap,ter_index) && w!=-1){
         min_route.dep=w;
         for(visit=CMap->v[w].first;visit;visit=visit->next){
             if(!final[visit->vindex]){
@@ -241,6 +264,10 @@ void LeastCost(CityMap *CMap, char departure[], char terminal[], int transportat
         }
         w=AddVex_To_S_double(CMap,final,MinWeight);
     }
+    if(w==-1){
+        printf("无路可通，有待开发（手动狗头）\n");
+        return;
+    }
     Print_Route(CMap,RouteRecord,ter_index,dep_index);
     return;
 }
@@ -254,6 +281,10 @@ void LeastExchange(CityMap *CMap, char* departure, char* terminal, int transport
     int dep_index,ter_index;
     dep_index=FoundIndex(CMap,departure);
     ter_index=FoundIndex(CMap,terminal);
+    if(dep_index==-1 || ter_index==-1){
+        printf("你输入的城市不存在\n");
+        return;
+    }
     int i;
     for(i=0;i<CMap->vexnum;i++){
         final[i]=0;
@@ -264,7 +295,7 @@ void LeastExchange(CityMap *CMap, char* departure, char* terminal, int transport
     Elemtype min_route;
     NodeLink* visit;
     int w=dep_index;
-    while(!IsEnding(final,CMap,ter_index)){
+    while(!IsEnding(final,CMap,ter_index) && w!=-1){
         min_route.dep=w;
         for(visit=CMap->v[w].first;visit;visit=visit->next){
             if(!final[visit->vindex]){
@@ -279,6 +310,10 @@ void LeastExchange(CityMap *CMap, char* departure, char* terminal, int transport
             }
         }
         w=AddVex_To_S(CMap,final,MinWeight);
+    }
+    if(w==-1){
+        printf("无路可通，有待开发（手动狗头）\n");
+        return;
     }
     Print_Route(CMap,RouteRecord,ter_index,dep_index);
     return;
