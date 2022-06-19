@@ -4,7 +4,7 @@
 
 #define MAX_RCD 10000           // ����¼��
 #define NUM_RCD 100             // ��¼��
-#define BOUNDARY 100            // ÿ�����ݵ����ȡֵ��Χ
+#define BOUNDARY 100            // ÿ�����ݵ����ȡֵ���?
 #define NUM_KEY 4               // �ؼ��ָ���
 
 typedef struct RcdType{
@@ -35,7 +35,7 @@ LinkedList *LSDDistr(LinkedList *LL, int order[]); // distribute & collect
 // MSD��
 SqList *MSD(SqList *SL, int order[]);
 
-// ������Ч��ʾ���
+// ������Ч��ʾ���?
 void InvalidInput();
 
 // �ж����ȼ��Ƿ���ȷ
@@ -47,23 +47,23 @@ void GetOrder(int order[]);
 // ��ʼ������
 LinkedList *InitLinkedList(LinkedList *LL);
 
-// ��������β���ӽ��
+// ��������β���ӽ��?
 LinkedList *AddLinkedList(LinkedList *LL, RcdType r);
 
-// ��ʼ��˳���
+// ��ʼ��˳���?
 SqList *InitSqList(SqList *SL);
 
 // ��˳�����β���ӽ��
 SqList *AddSqList(SqList *SL, RcdType r, int i);
 
-// ��ӡ˳����е�������
+// ��ӡ˳����е�������?
 void PrintSqList(SqList *SL);
 
 // ��ӡ�����е�������
 void PrintLinkedList(LinkedList *LL);
 
-// compare: ��űȽϴ���
-// move: ����ƶ�����
+// compare: ��űȽϴ���?
+// move: ����ƶ�����?
 
 /*unsigned long LSDStable_compare;
 unsigned long LSDStable_move;

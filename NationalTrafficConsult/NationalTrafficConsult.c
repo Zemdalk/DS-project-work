@@ -3,6 +3,13 @@
 
 int main(){
     // 这里写个好看的欢迎界面，还要有作者信息
+    printf("----------------------------------------------------------欢迎使用升级版12306--------------------------------------------------------\n");
+    printf("开发人员：吕星宇、胡康、赵昱杰\n");
+    printf("如果您还不熟悉本程序，请先查阅说明手册\n");
+    printf("相信本程序会为您带来便利\n");
+    printf("祝您平安出行，旅途愉快!\n");
+
+    printf("\n");
     
     char TTable[MAX_STR_LEN] = "TrainTable.txt";
     char FTable[MAX_STR_LEN] = "FlightTable.txt";
@@ -12,6 +19,9 @@ int main(){
 
     // next line is used for release file (noted by lxy)
     CityMap *CMap = GetMap(TTable, FTable);  // 从文件中初始化交通图
+
+    //用户界面展示
+    
 
     while(1){
         SetMap(CMap, TTable, FTable);

@@ -5,17 +5,18 @@
 void Decision(CityMap *CMap){
     int transportation;
 
-    printf("请输入你想使用的交通工具(0:火车 1:飞机)\n");
+    printf("请输入您想使用的交通工具(1:火车 2:飞机)\n");
     while (1){
         scanf("%d",&transportation);
-        if(transportation==0 || transportation==1) break;
+        if(transportation==1 || transportation==2) break;
         printf("输入无效,请重新输入\n");
     }
+    transportation--;
     
     char departure[MAX_STR_LEN],terminal[MAX_STR_LEN];
-    printf("请输入你的起点\n");
+    printf("请输入您的起点\n");
     scanf("%s",departure);
-    printf("请输入你的终点\n");
+    printf("请输入您的终点\n");
     scanf("%s",terminal);
     getchar();
 
@@ -202,7 +203,7 @@ void LeastDurationTime(CityMap *CMap, char departure[], char terminal[], int tra
     }
     Print_Route(CMap,RouteRecord_ptr[m],ter_index,dep_index);
     return;
-
+}
 
 //最低价格决策
 //采用Dijkstra算法，权值为价格
