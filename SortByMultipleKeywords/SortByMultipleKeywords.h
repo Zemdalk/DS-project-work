@@ -11,10 +11,15 @@ typedef struct RcdType{
     int key[NUM_KEY];           // 4个关键字
 } RcdType;                      // 记录类型
 
+typedef struct RcdSqType{
+    RcdType data;               // 4个关键字
+    int ord;                    // 顺序数
+}RcdSqType;
+
 typedef struct SqList{
-    RcdType rcd[MAX_RCD + 1];   // v[0]闲置，供内部排序算法使用 
-    int length;                 // 记录数
-} SqList;                       // LSD-稳定的内部排序；MSD
+    RcdSqType rcd[MAX_RCD + 1];   // v[0]闲置，供内部排序算法使用 
+    int length;                   // 记录数
+} SqList;                         // LSD-稳定的内部排序；MSD
 
 typedef struct LinkedList{
     RcdType rcd;
@@ -49,7 +54,7 @@ LinkedList *AddLinkedList(LinkedList *LL, RcdType r);
 SqList *InitSqList(SqList *SL);
 
 // 向顺序表结尾添加结点
-SqList *AddSqList(SqList *SL, RcdType r);
+SqList *AddSqList(SqList *SL, RcdType r, int i);
 
 // 打印顺序表中的排序结果
 void PrintSqList(SqList *SL);
@@ -57,18 +62,6 @@ void PrintSqList(SqList *SL);
 // 打印链表中的排序结果
 void PrintLinkedList(LinkedList *LL);
 
-// compare: 存放比较次数
-// move: 存放移动次数
+void Qsort(SqList *SL,int low, int high,int key_num);
 
-/*unsigned long LSDStable_compare;
-unsigned long LSDStable_move;
-
-unsigned long LSDDistr_compare;
-unsigned long LSDDistr_move;
-
-unsigned long MSD_compare;
-unsigned long MSD_move;*/
-
-void Qsort(SqList *SL,int low, int high, int key_num);
-
-int Partition(SqList *SL,int low, int high, int key_num);
+int Partition(SqList *SL,int low,int high,int key_num);
