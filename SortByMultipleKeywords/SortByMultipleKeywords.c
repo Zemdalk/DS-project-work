@@ -1,3 +1,4 @@
+
 #include "SortByMultipleKeywords.h"
 
 int main(){
@@ -42,14 +43,6 @@ int main(){
     PrintSqList(SL);
 
     SqList *SL1=SL;
-
-    // 把其中一个计算结果打印出来即可
-    //printf("排序结果1：\n");
-    //PrintLinkedList(LL);
-    //printf("排序结果2：\n");
-    //PrintSqList(SL);
-    //printf("排序结果3：\n");
-    //PrintSqList(SL2);
 
     if(func==1){
         LL  = LSDDistr(LL, order);
